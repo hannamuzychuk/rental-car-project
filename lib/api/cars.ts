@@ -1,4 +1,4 @@
-import type { CarsListResponse } from "@/lib/types/cars";
+import type { Car, CarsListResponse } from "@/lib/types/cars";
 
 const BASE_URL =
   process.env.NEXT_PUBLIC_API_URL ?? "https://car-rental-api.goit.global";
@@ -45,4 +45,23 @@ export const getCarsList = async (
   }
 
   return response.json() as Promise<CarsListResponse>;
+};
+
+export const getCarById = async (id: string): Promise<Car> => {
+  const response = await fetch(
+    `${BASE_URL}/cars/${encodeURIComponent(id)}`,
+    {
+      cache: "no-store",
+    },
+  );
+
+  if (response.status === 404) {
+    throw new Error("NOT_FOUND");
+  }
+
+  if (!response.ok) {
+    throw new Error(`GET /cars/${id} failed: ${response.status}`);
+  }
+
+  return response.json() as Promise<Car>;
 };

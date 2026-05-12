@@ -1,0 +1,55 @@
+.main {
+  max-width: 1440px;
+  margin: 0 auto;
+  padding: 40px 120px 80px;
+}
+
+.hero {
+  width: 100%;
+  max-height: 480px;
+  object-fit: cover;
+  border-radius: 14px;
+  background: #f2f4f7;
+}
+
+.content {
+  margin-top: 28px;
+}
+
+.title {
+  margin: 0 0 8px;
+  font-size: 32px;
+  font-weight: 600;
+  color: #101828;
+}
+
+.price {
+  margin: 0 0 32px;
+  font-size: 18px;
+  font-weight: 500;
+  color: #101828;
+}
+
+.block {
+  margin-bottom: 32px;
+}
+
+.block h2 {
+  margin: 0 0 12px;
+  font-size: 20px;
+  font-weight: 600;
+  color: #101828;
+}
+
+.block p {
+  margin: 0;
+  line-height: 1.5;
+  color: #475467;
+}
+
+.block ul {
+  margin: 0;
+  padding-left: 1.25rem;
+  color: #475467;
+  line-height: 1.6;
+}
