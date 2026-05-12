@@ -1,3 +1,4 @@
+import { CatalogBrandSelect } from "./CatalogBrandSelect";
 import styles from "./CatalogFilter.module.css";
 
 export type CatalogFilterDraft = {
@@ -22,17 +23,11 @@ export function CatalogFilter({
 }: CatalogFilterProps) {
   return (
     <section className={styles.filters} aria-label="Filters">
-      <label className={styles.field}>
-        <span>Car brand</span>
-        <input
-          type="text"
-          value={draft.brand}
-          onChange={(e) =>
-            onDraftChange({ ...draft, brand: e.target.value })
-          }
-          placeholder="Enter the text"
-        />
-      </label>
+      <CatalogBrandSelect
+        value={draft.brand}
+        onChange={(brand) => onDraftChange({ ...draft, brand })}
+        disabled={isBusy}
+      />
 
       <label className={styles.field}>
         <span>Price / 1 hour</span>
