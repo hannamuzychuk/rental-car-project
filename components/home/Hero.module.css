@@ -1,0 +1,67 @@
+.section {
+    position: relative;
+    display: flex;
+    min-height: 700px;
+    flex-direction: column;
+    justify-content: flex-end;
+    background-color: #18181b;
+    padding: 0 120px 4rem;
+    color: #fff;
+  }
+  
+  .overlay {
+    pointer-events: none;
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(
+      to top,
+      rgba(0, 0, 0, 0.7),
+      rgba(0, 0, 0, 0.2)
+    );
+  }
+  
+  .inner {
+    position: relative;
+    max-width: 783px;
+    display: flex;
+    flex-direction: column;
+    gap: 2.5rem;
+  }
+  
+  .textBlock {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  
+  .title {
+    margin: 0;
+    font-size: 3rem;
+    line-height: 1.1;
+    font-weight: 700;
+  }
+  
+  .subtitle {
+    margin: 0;
+    font-size: 1.125rem;
+    line-height: 1.5;
+    color: rgba(255, 255, 255, 0.9);
+  }
+  
+  .catalogButton {
+    display: inline-flex;
+    height: 44px;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+    background-color: #3470ff;
+    padding: 0 5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #fff;
+    text-decoration: none;
+  }
+  
+  .catalogButton:hover {
+    filter: brightness(1.05);
+  }
