@@ -1,0 +1,57 @@
+.bar {
+  border-bottom: 1px solid #dadde1;
+  background: #ffffff;
+}
+
+.inner {
+  max-width: 1200px;
+  margin-inline: auto;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.brand {
+  font-size: 18px;
+  font-weight: 600;
+  color: #101828;
+  text-decoration: none;
+}
+
+.brand:hover {
+  color: #3470ff;
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.link {
+  padding: 8px 14px;
+  border-radius: 8px;
+  font-size: 15px;
+  font-weight: 500;
+  color: #475467;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.link:hover {
+  color: #101828;
+  background: #f2f4f7;
+}
+
+.linkActive {
+  composes: link;
+  color: #3470ff;
+  background: #eff4ff;
+}
+
+.linkActive:hover {
+  color: #3470ff;
+  background: #e0eaff;
+}

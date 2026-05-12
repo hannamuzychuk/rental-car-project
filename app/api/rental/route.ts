@@ -8,12 +8,6 @@ type RentalBody = {
   comment: string;
 };
 
-/**
- * Proxy / BFF dla formularza wynajmu:
- * - front: POST /api/rental (ta sama domena co Next — brak CORS do własnego API)
- * - opcjonalnie: jeśli ustawisz RENTAL_UPSTREAM_URL (tylko server env), body jest
- *   przekazywane dalej metodą POST (np. własny backend / mock zewnętrzny)
- */
 export async function POST(request: Request) {
   let body: RentalBody;
   try {
