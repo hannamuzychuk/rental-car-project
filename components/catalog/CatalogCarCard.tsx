@@ -16,7 +16,12 @@ export function CatalogCarCard({ car }: CatalogCarCardProps) {
                     <span className={styles.model}>{label}</span>
                     <span className={styles.price}>{car.rentalPrice}$</span>
                 </div>
-                <Link href={`/catalog/${car.id}`} className={styles.readMore}>
+                <Link
+                    href={`/catalog/${car.id}`}
+                    className={styles.readMore}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                >
                     Read more
                 </Link>
             </div>

@@ -1,6 +1,7 @@
 "use client";
 
-import { useState, type SubmitEvent } from "react";
+import { useState, type FormEvent } from "react";
+import { toast } from "sonner";
 import styles from "./RentalForm.module.css";
 
 type RentalFormProps = { carId: string };
@@ -11,15 +12,12 @@ export function RentalForm({ carId }: RentalFormProps) {
   const [date, setDate] = useState("");
   const [comment, setComment] = useState("");
   const [pending, setPending] = useState(false);
-  const [error, setError] = useState<string | null>(null);
-  const [success, setSuccess] = useState(false);
 
-  async function onSubmit(e: SubmitEvent<HTMLFormElement>) {
+  async function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
-    setError(null);
-    setSuccess(false);
     setPending(true);
-    try {
+
+    const submit = async () => {
       const res = await fetch("/api/rental", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -34,16 +32,29 @@ export function RentalForm({ carId }: RentalFormProps) {
 
       if (!res.ok) {
         const text = await res.text();
-        throw new Error(text || `Request failed: ${res.status}`);
+        let message = text || `Request failed: ${res.status}`;
+        try {
+          const data = JSON.parse(text) as { message?: string };
+          if (typeof data.message === "string") message = data.message;
+        } catch {
+          /* use raw text */
+        }
+        throw new Error(message);
       }
 
-      setSuccess(true);
       setName("");
       setEmail("");
       setDate("");
       setComment("");
-    } catch (err) {
-      setError(err instanceof Error ? err.message : "Something went wrong");
+    };
+
+    try {
+      await toast.promise(submit(), {
+        loading: "Sending booking…",
+        success: "Booking submitted successfully.",
+        error: (err) =>
+          err instanceof Error ? err.message : "Something went wrong",
+      });
     } finally {
       setPending(false);
     }
@@ -59,13 +70,6 @@ export function RentalForm({ carId }: RentalFormProps) {
             are required.
           </p>
         </header>
-
-        {success && (
-          <p className={styles.success} role="status">
-            Booking submitted successfully.
-          </p>
-        )}
-        {error && <p className={styles.error}>{error}</p>}
 
         <form onSubmit={onSubmit} className={styles.form} noValidate>
           <div className={styles.fields}>
