@@ -32,6 +32,9 @@
     font-weight: 600;
     cursor: pointer;
   }
+  .loadMore:hover:not(:disabled) {
+    border-color: #0b44cd;
+  }
   .loadMore:disabled {
     opacity: 0.6;
     cursor: not-allowed;

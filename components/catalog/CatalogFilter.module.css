@@ -1,186 +1,182 @@
-.main {
-    max-width: 1440px;
-    margin: 0 auto;
-    padding: 80px 120px 150px;
+/* Catalog filters — layout aligned with Figma (Block ~924px: row 752px + gap + button) */
+
+.filters {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+  margin-bottom: 56px;
+}
+
+.filterRow {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: 16px;
+  flex: 1 1 auto;
+  min-width: 0;
+  max-width: 752px;
+}
+
+.colBrand {
+  width: 204px;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+
+.colPrice {
+  width: 196px;
+  max-width: 100%;
+  flex-shrink: 0;
+}
+
+.colMileage {
+  width: 320px;
+  max-width: 100%;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.14;
+  color: #8d929a;
+}
+
+.field input,
+.field select {
+  box-sizing: border-box;
+  width: 100%;
+  height: 44px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 12px;
+  background: #f7f7f7;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #101828;
+  outline: none;
+}
+
+.field input::placeholder {
+  color: #8d929a;
+}
+
+.field input:focus-visible,
+.field select:focus-visible {
+  box-shadow: 0 0 0 2px #3470ff;
+}
+
+.field select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%23101828' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.field select:disabled,
+.field input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Mileage block (UI kit): outer row has no stroke; only the “from” cell is outlined. */
+.mileagePair {
+  display: flex;
+  width: 100%;
+  gap: 0;
+}
+
+.mileageFrom,
+.mileageTo {
+  box-sizing: border-box;
+  flex: 1;
+  min-width: 0;
+  height: 44px;
+  border: none;
+  padding: 0 24px;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #101828;
+  outline: none;
+}
+
+.mileageFrom {
+  background: #f7f7f7;
+  border: 1px solid #dadde1;
+  border-radius: 12px 0 0 12px;
+}
+
+.mileageTo {
+  background: #f7f7f7;
+  border-radius: 0 12px 12px 0;
+}
+
+.mileageFrom::placeholder,
+.mileageTo::placeholder {
+  color: #8d929a;
+}
+
+.mileageFrom:focus-visible,
+.mileageTo:focus-visible {
+  position: relative;
+  z-index: 1;
+  box-shadow: inset 0 0 0 2px #3470ff;
+}
+
+.apply {
+  flex-shrink: 0;
+  width: 156px;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  background: #3470ff;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  cursor: pointer;
+}
+
+.apply:hover:not(:disabled) {
+  background: #0b44cd;
+}
+
+.apply:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #b42318;
+}
+
+@media (max-width: 900px) {
+  .filterRow {
+    max-width: none;
   }
-  
-  .title {
-    margin: 0 0 56px;
-    font-size: 32px;
-    font-weight: 600;
-    line-height: 1;
-    color: #101828;
-  }
-  
-  .filters {
-    display: flex;
-    flex-wrap: wrap;
-    align-items: flex-end;
-    gap: 18px;
-    margin-bottom: 56px;
-  }
-  
-  .field {
-    display: flex;
-    flex-direction: column;
-    gap: 8px;
-    min-width: 160px;
-  }
-  
-  .field span {
-    font-size: 14px;
-    font-weight: 400;
-    line-height: 1.29;
-    color: #8d929a;
-  }
-  
-  .field input,
-  .field select {
-    height: 48px;
-    padding: 0 16px;
-    border-radius: 14px;
-    border: 1px solid #dadde1;
-    background: #f7f7f7;
-    font-size: 16px;
-    color: #101828;
-  }
-  
-  .apply {
-    height: 48px;
-    padding: 0 20px;
-    border-radius: 14px;
-    border: none;
-    background: #3470ff;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  
-  .apply:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-  
-  .muted {
-    margin: 0;
-    color: #8d929a;
-  }
-  
-  .error {
-    margin: 0 0 24px;
-    color: #b42318;
-  }
-  
-  .grid {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 32px;
-  }
-  
-  .card {
-    display: flex;
-    flex-direction: column;
-    border-radius: 14px;
-    overflow: hidden;
-    background: #fff;
-  }
-  
-  .thumb {
-    aspect-ratio: 274 / 268;
+
+  .colBrand,
+  .colPrice,
+  .colMileage {
     width: 100%;
-    object-fit: cover;
-    background: #f2f4f7;
   }
-  
-  .body {
-    padding: 16px 16px 20px;
-    display: flex;
-    flex-direction: column;
-    flex: 1;
-    gap: 8px;
+
+  .apply {
+    width: 100%;
   }
-  
-  .meta {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 12px;
-    font-size: 16px;
-    font-weight: 500;
-    color: #101828;
-  }
-  
-  .model {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
-  
-  .price {
-    flex-shrink: 0;
-    font-size: 16px;
-    font-weight: 500;
-    color: #101828;
-  }
-  
-  .readMore {
-    margin-top: auto;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    height: 44px;
-    border-radius: 12px;
-    background: #3470ff;
-    color: #fff;
-    font-size: 16px;
-    font-weight: 600;
-    text-decoration: none;
-  }
-  
-  .readMore:hover {
-    background: #2563eb;
-  }
-  
-  .loadMore {
-    display: block;
-    margin: 80px auto 0;
-    min-width: 156px;
-    height: 44px;
-    padding: 0 24px;
-    border-radius: 12px;
-    border: 1px solid #3470ff;
-    background: #fff;
-    color: #101828;
-    font-size: 16px;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  
-  .loadMore:disabled {
-    opacity: 0.6;
-    cursor: not-allowed;
-  }
-  
-  @media (max-width: 1200px) {
-    .main {
-      padding: 48px 40px 100px;
-    }
-  
-    .grid {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-    }
-  }
-  
-  @media (max-width: 640px) {
-    .main {
-      padding: 32px 16px 80px;
-    }
-  
-    .grid {
-      grid-template-columns: 1fr;
-    }
-  }
+}

@@ -26,13 +26,13 @@ export function CatalogBrandSelect({
 
   return (
     <label className={styles.field}>
-      <span>Car brand</span>
+      <span className={styles.label}>Car brand</span>
       <select
         value={value}
         onChange={(e) => onChange(e.target.value)}
         disabled={selectDisabled}
       >
-        <option value="">All brands</option>
+        <option value="">Choose a brand</option>
         {brands.map((brand) => (
           <option key={brand} value={brand}>
             {brand}
