@@ -14,13 +14,22 @@
 }
 
 .brand {
+  display: inline-flex;
+  align-items: baseline;
   font-size: 18px;
   font-weight: 600;
-  color: #101828;
   text-decoration: none;
 }
 
-.brand:hover {
+.brandRental {
+  color: #101828;
+}
+
+.brandCar {
+  color: #3470ff;
+}
+
+.brand:hover .brandRental {
   color: #3470ff;
 }
 

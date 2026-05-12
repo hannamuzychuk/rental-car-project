@@ -4,9 +4,12 @@ import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import styles from "./RentalForm.module.css";
 
-type RentalFormProps = { carId: string };
+type RentalFormProps = {
+  carId: string;
+  embedded?: boolean;
+};
 
-export function RentalForm({ carId }: RentalFormProps) {
+export function RentalForm({ carId, embedded = false }: RentalFormProps) {
   const [name, setName] = useState("");
   const [email, setEmail] = useState("");
   const [date, setDate] = useState("");
@@ -61,13 +64,14 @@ export function RentalForm({ carId }: RentalFormProps) {
   }
 
   return (
-    <section className={styles.wrap}>
+    <section
+      className={embedded ? `${styles.wrap} ${styles.embedded}` : styles.wrap}
+    >
       <div className={styles.card}>
         <header className={styles.header}>
-          <h2 className={styles.title}>Book your car</h2>
+          <h2 className={styles.title}>Book your car now</h2>
           <p className={styles.supporting}>
-            Complete the form to submit your booking request. Fields marked with *
-            are required.
+            Stay connected! We are always ready to help you.
           </p>
         </header>
 

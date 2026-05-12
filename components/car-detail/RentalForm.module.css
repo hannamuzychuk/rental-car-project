@@ -2,6 +2,14 @@
   margin-top: 32px;
 }
 
+.embedded {
+  margin-top: 0;
+}
+
+.embedded .card {
+  max-width: none;
+}
+
 .card {
   max-width: 640px;
   width: 100%;

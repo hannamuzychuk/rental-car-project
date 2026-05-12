@@ -21,7 +21,8 @@ export function Header() {
     <header className={styles.bar}>
       <div className={styles.inner}>
         <Link href="/" className={styles.brand}>
-          Rental
+          <span className={styles.brandRental}>Rental</span>
+          <span className={styles.brandCar}>Car</span>
         </Link>
         <nav className={styles.nav} aria-label="Main navigation">
           {links.map(({ href, label }) => {
