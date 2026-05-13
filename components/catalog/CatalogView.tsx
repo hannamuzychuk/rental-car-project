@@ -39,7 +39,11 @@ export function CatalogView() {
   });
 
   const cars = query.data?.pages.flatMap((page) => page.cars) ?? [];
-  const searchBusy = query.isFetching && !query.isFetchingNextPage;
+  /** Lock filters only while refetching after user action — not on first paint (so fields stay usable). */
+  const searchBusy =
+    query.isFetching &&
+    !query.isFetchingNextPage &&
+    !query.isLoading;
 
   const errorMessage =
     query.error instanceof Error ? query.error.message : "Try again.";

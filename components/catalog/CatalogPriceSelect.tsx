@@ -1,18 +1,17 @@
 "use client";
 
-import { getBrandsList } from "@/lib/api/brends";
-import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 import styles from "./CatalogFilter.module.css";
 
-type CatalogBrandSelectProps = {
+const PRICE_OPTIONS = [30, 40, 50, 60, 70, 80] as const;
+const PLACEHOLDER = "Choose a price";
+
+type CatalogPriceSelectProps = {
   value: string;
   onChange: (value: string) => void;
   disabled?: boolean;
 };
-
-const PLACEHOLDER = "Choose a brand";
 
 type Row = { key: string; value: string; label: string };
 
@@ -22,26 +21,22 @@ function highlightIndexForValue(rows: Row[], current: string): number {
   return idx >= 0 ? idx : 0;
 }
 
-export function CatalogBrandSelect({
+export function CatalogPriceSelect({
   value,
   onChange,
   disabled,
-}: CatalogBrandSelectProps) {
-  const brandsQuery = useQuery({
-    queryKey: ["brands"],
-    queryFn: () => getBrandsList(),
-  });
-
-  const busy = Boolean(disabled) || brandsQuery.isLoading;
-  const blocked = busy || brandsQuery.isError;
-
-  const rows: Row[] = useMemo(() => {
-    const list = brandsQuery.data ?? [];
-    return [
+}: CatalogPriceSelectProps) {
+  const rows: Row[] = useMemo(
+    () => [
       { key: "__clear__", value: "", label: PLACEHOLDER },
-      ...list.map((b) => ({ key: b, value: b, label: b })),
-    ];
-  }, [brandsQuery.data]);
+      ...PRICE_OPTIONS.map((n) => ({
+        key: String(n),
+        value: String(n),
+        label: String(n),
+      })),
+    ],
+    [],
+  );
 
   const [open, setOpen] = useState(false);
   const [highlight, setHighlight] = useState(0);
@@ -83,7 +78,7 @@ export function CatalogBrandSelect({
   );
 
   const onTriggerClick = () => {
-    if (blocked) return;
+    if (disabled) return;
     if (open) {
       setOpen(false);
     } else {
@@ -92,7 +87,7 @@ export function CatalogBrandSelect({
   };
 
   const onTriggerKeyDown = (e: React.KeyboardEvent) => {
-    if (blocked) return;
+    if (disabled) return;
     if (e.key === "Escape") {
       if (open) {
         e.preventDefault();
@@ -125,10 +120,12 @@ export function CatalogBrandSelect({
     }
   };
 
+  const triggerLabel = value ? `${value}$` : PLACEHOLDER;
+
   return (
     <div ref={rootRef} className={styles.filterCombo}>
       <span id={labelId} className={styles.label}>
-        Car brand
+        Price/ 1 hour
       </span>
       <button
         type="button"
@@ -136,16 +133,17 @@ export function CatalogBrandSelect({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listId}
-        disabled={blocked}
+        disabled={disabled}
         onClick={onTriggerClick}
         onKeyDown={onTriggerKeyDown}
+        aria-label="Price per hour"
       >
         <span
           className={
             value ? styles.filterTriggerValue : styles.filterTriggerPlaceholder
           }
         >
-          {brandsQuery.isLoading ? "Loading…" : value || PLACEHOLDER}
+          {triggerLabel}
         </span>
         {open ? (
           <LuChevronUp className={styles.filterChevron} aria-hidden />
@@ -154,7 +152,7 @@ export function CatalogBrandSelect({
         )}
       </button>
 
-      {open && !brandsQuery.isLoading && rows.length >= 1 && (
+      {open && rows.length >= 1 && (
         <ul
           ref={listRef}
           id={listId}
@@ -164,7 +162,7 @@ export function CatalogBrandSelect({
           className={styles.filterList}
         >
           {rows.map((row, index) => {
-            const isChosenBrand =
+            const isChosenPrice =
               row.value !== "" && row.value === value;
             const isKeyboard = index === highlight;
             const optionId = `${listId}-opt-${index}`;
@@ -176,7 +174,7 @@ export function CatalogBrandSelect({
                 aria-selected={row.value === value}
                 data-index={index}
                 className={
-                  isChosenBrand
+                  isChosenPrice
                     ? styles.filterOptionSelected
                     : isKeyboard
                       ? styles.filterOptionActive
@@ -191,10 +189,6 @@ export function CatalogBrandSelect({
             );
           })}
         </ul>
-      )}
-
-      {brandsQuery.isError && (
-        <p className={styles.error}>Could not load brands. Try again.</p>
       )}
     </div>
   );

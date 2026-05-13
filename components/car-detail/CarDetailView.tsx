@@ -10,8 +10,11 @@ import {
 import { RentalForm } from "./RentalForm";
 import styles from "./CarDetailView.module.css";
 
-function groupThousandsWithSpaces(value: number) {
-  return value.toString().replace(/\B(?=(\d{3})+(?!\d))/g, " ");
+function groupThousandsWithCommas(value: number) {
+  if (!Number.isFinite(value)) return "";
+  return Math.trunc(value)
+    .toString()
+    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
 
 function CheckList({ items }: { items: string[] }) {
@@ -29,7 +32,7 @@ function CheckList({ items }: { items: string[] }) {
 
 export function CarDetailView({ car }: { car: Car }) {
   const heading = `${car.brand} ${car.model}, ${car.year}`;
-  const mileageLabel = groupThousandsWithSpaces(car.mileage);
+  const mileageLabel = groupThousandsWithCommas(car.mileage);
 
   const accessoriesAndFeatures = [...car.accessories, ...car.functionalities];
 

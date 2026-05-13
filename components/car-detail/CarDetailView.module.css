@@ -1,7 +1,7 @@
 .main {
   max-width: 1440px;
   margin: 0 auto;
-  padding: 40px clamp(20px, 6vw, 120px) 80px;
+  padding: 40px 120px 80px;
 }
 
 .grid {
@@ -9,12 +9,6 @@
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
   gap: 40px 56px;
   align-items: start;
-}
-
-@media (max-width: 960px) {
-  .grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 .left {
@@ -47,7 +41,7 @@
 
 .title {
   margin: 0;
-  font-size: clamp(24px, 3vw, 32px);
+  font-size: 32px;
   font-weight: 600;
   line-height: 1.2;
   color: #101828;
