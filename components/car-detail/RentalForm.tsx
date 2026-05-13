@@ -2,6 +2,7 @@
 
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
+import { BookingDatePicker } from "./BookingDatePicker";
 import styles from "./RentalForm.module.css";
 
 type RentalFormProps = {
@@ -99,14 +100,12 @@ export function RentalForm({ carId, embedded = false }: RentalFormProps) {
               required
               disabled={pending}
             />
-            <input
-              className={styles.input}
-              type="text"
+            <BookingDatePicker
               name="bookingDate"
-              placeholder="Booking date"
               value={date}
-              onChange={(e) => setDate(e.target.value)}
+              onChange={setDate}
               disabled={pending}
+              placeholder="Booking date"
             />
             <textarea
               className={styles.textarea}

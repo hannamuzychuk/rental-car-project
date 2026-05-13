@@ -1,0 +1,161 @@
+.field {
+  position: relative;
+  width: 100%;
+}
+
+.trigger {
+  box-sizing: border-box;
+  width: 100%;
+  height: 48px;
+  padding: 0 20px;
+  border: none;
+  border-radius: 12px;
+  background: #f7f7f7;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #101828;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+.trigger:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.triggerPlaceholder {
+  color: #8d929a;
+}
+
+.trigger:focus-visible {
+  box-shadow: 0 0 0 2px #3470ff;
+}
+
+.dropdown {
+  position: absolute;
+  z-index: 50;
+  left: 50%;
+  top: calc(100% + 4px);
+  width: 276px;
+  padding-top: 8px;
+  transform: translateX(-50%);
+}
+
+.panel {
+  position: relative;
+  box-sizing: border-box;
+  width: 276px;
+  padding: 14px 12px 14px;
+  border: 1px solid #3470ff;
+  border-radius: 12px;
+  background: #fff;
+  box-shadow: 0 12px 32px rgba(16, 24, 40, 0.12);
+}
+
+.caret {
+  position: absolute;
+  z-index: 2;
+  top: 2px;
+  left: 50%;
+  width: 12px;
+  height: 12px;
+  margin-left: -6px;
+  box-sizing: border-box;
+  border-left: 1px solid #3470ff;
+  border-top: 1px solid #3470ff;
+  background: #fff;
+  transform: rotate(45deg);
+}
+
+.picker :global(.rdp-root) {
+  --rdp-accent-color: #3470ff;
+  --rdp-accent-background-color: #eff4ff;
+  --rdp-day-height: 32px;
+  --rdp-day-width: 36px;
+  --rdp-day_button-height: 32px;
+  --rdp-day_button-width: 36px;
+  --rdp-day_button-border-radius: 8px;
+  --rdp-day_button-border: none;
+  --rdp-selected-border: none;
+  --rdp-nav_button-height: 24px;
+  --rdp-nav_button-width: 24px;
+  --rdp-nav-height: 24px;
+  --rdp-weekday-opacity: 1;
+  --rdp-outside-opacity: 1;
+  --rdp-today-color: #3470ff;
+
+  margin: 0;
+}
+
+.picker :global(.rdp-month_caption) {
+  height: 24px;
+  margin-bottom: 12px;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+.picker :global(.rdp-caption_label) {
+  font-size: 16px;
+  font-weight: 600;
+  color: #101828;
+}
+
+.picker :global(thead) {
+  border-bottom: 1px solid #3470ff;
+}
+
+.picker :global(.rdp-weekday) {
+  width: 36px;
+  height: 14px;
+  padding: 0 0 12px;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.02em;
+  color: #8d929a;
+  text-transform: uppercase;
+}
+
+.picker :global(.rdp-month_grid) {
+  width: 100%;
+  margin-top: 12px;
+  border-collapse: collapse;
+}
+
+.picker :global(tbody .rdp-week) {
+  height: 32px;
+}
+
+.picker :global(.rdp-day_button) {
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 32px;
+  color: #101828;
+}
+
+.picker :global(.rdp-outside .rdp-day_button) {
+  color: #8d929a;
+}
+
+.picker
+  :global(.rdp-day:not(.rdp-outside):not(.rdp-selected) .rdp-day_button:hover:not(:disabled)) {
+  border-radius: 8px;
+  background: #f2f4f7;
+}
+
+.picker :global(.rdp-selected) {
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.picker :global(.rdp-selected .rdp-day_button) {
+  border-radius: 32px;
+  background: #3470ff;
+  color: #fff;
+}
+
+.picker :global(.rdp-selected .rdp-day_button:hover:not(:disabled)) {
+  background: #2b5ce6;
+  color: #fff;
+}
