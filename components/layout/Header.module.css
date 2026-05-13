@@ -1,12 +1,16 @@
 .bar {
-  border-bottom: 1px solid #dadde1;
-  background: #ffffff;
+  box-sizing: border-box;
+  min-height: var(--header-bar-height, 68px);
+  border-bottom: 1px solid #e4e7ec;
+  background: rgb(242, 244, 247);
 }
 
 .inner {
-  max-width: 1200px;
+  box-sizing: border-box;
+  max-width: var(--layout-max-width, 1440px);
+  width: 100%;
   margin-inline: auto;
-  padding: 16px 20px;
+  padding: 16px var(--layout-padding-x, 120px);
   display: flex;
   align-items: center;
   justify-content: space-between;

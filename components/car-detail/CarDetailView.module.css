@@ -1,7 +1,8 @@
 .main {
-  max-width: 1440px;
+  box-sizing: border-box;
+  max-width: var(--layout-max-width, 1440px);
   margin: 0 auto;
-  padding: 40px 120px 80px;
+  padding: 40px var(--layout-padding-x, 120px) 80px;
 }
 
 .grid {
