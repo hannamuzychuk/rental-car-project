@@ -44,7 +44,13 @@ export const getCarsList = async (
     throw new Error(`GET /cars failed: ${response.status}`);
   }
 
-  return response.json() as Promise<CarsListResponse>;
+  const data = (await response.json()) as CarsListResponse;
+  return {
+    ...data,
+    page: Number(data.page),
+    totalPages: Number(data.totalPages),
+    totalCars: Number(data.totalCars),
+  };
 };
 
 export const getCarById = async (id: string): Promise<Car> => {
