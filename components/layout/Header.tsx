@@ -31,7 +31,11 @@ export function Header() {
               <Link
                 key={href}
                 href={href}
-                className={active ? styles.linkActive : styles.link}
+                className={
+                  active
+                    ? `${styles.link} ${styles.linkActive}`
+                    : styles.link
+                }
                 aria-current={active ? "page" : undefined}
               >
                 {label}

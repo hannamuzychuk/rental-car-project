@@ -10,11 +10,11 @@
   max-width: var(--layout-max-width, 1440px);
   width: 100%;
   margin-inline: auto;
-  padding: 16px var(--layout-padding-x, 120px);
+  padding: 12px var(--layout-padding-x, 32px);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  gap: 16px;
+  gap: 12px;
 }
 
 .brand {
@@ -44,9 +44,9 @@
 }
 
 .link {
-  padding: 8px 14px;
+  padding: 6px 10px;
   border-radius: 8px;
-  font-size: 15px;
+  font-size: 14px;
   font-weight: 500;
   color: #475467;
   text-decoration: none;
@@ -59,7 +59,6 @@
 }
 
 .linkActive {
-  composes: link;
   color: #3470ff;
   background: #eff4ff;
 }
@@ -67,4 +66,17 @@
 .linkActive:hover {
   color: #3470ff;
   background: #e0eaff;
+}
+
+@media (min-width: 768px) {
+  .inner {
+    padding-block: 16px;
+    gap: 16px;
+  }
+
+  .link,
+  .linkActive {
+    padding: 8px 14px;
+    font-size: 15px;
+  }
 }

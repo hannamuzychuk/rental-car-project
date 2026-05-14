@@ -2,7 +2,14 @@
   box-sizing: border-box;
   max-width: var(--layout-max-width, 1440px);
   margin: 0 auto;
-  padding: 40px var(--layout-padding-x, 120px) 80px;
+  padding: 24px var(--layout-padding-x, 32px) 48px;
+}
+
+@media (min-width: 375px) {
+  .main {
+    padding-top: 28px;
+    padding-bottom: 52px;
+  }
 }
 
 .backRow {
@@ -15,8 +22,9 @@
   align-items: center;
   justify-content: center;
   gap: 8px;
-  min-width: 156px;
-  height: 44px;
+  width: 100%;
+  max-width: 320px;
+  min-height: 44px;
   padding: 0 24px;
   border-radius: 12px;
   border: 1px solid #3470ff;
@@ -38,6 +46,12 @@
   box-shadow: 0 0 0 2px #3470ff;
 }
 
+@media (min-width: 375px) {
+  .backLink {
+    max-width: none;
+  }
+}
+
 .backIcon {
   flex-shrink: 0;
   width: 18px;
@@ -46,13 +60,14 @@
 
 .grid {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
-  gap: 40px 56px;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 32px;
   align-items: start;
 }
 
 .left {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   gap: 24px;
 }
@@ -67,6 +82,7 @@
 
 .right {
   display: flex;
+  min-width: 0;
   flex-direction: column;
   gap: 0;
 }
@@ -81,7 +97,7 @@
 
 .title {
   margin: 0;
-  font-size: 32px;
+  font-size: 1.5rem;
   font-weight: 600;
   line-height: 1.2;
   color: #101828;
@@ -120,7 +136,7 @@
 
 .price {
   margin: 0 0 20px;
-  font-size: 40px;
+  font-size: clamp(1.75rem, 4vw + 1rem, 2.5rem);
   font-weight: 700;
   line-height: 1;
   color: #3470ff;
@@ -205,4 +221,44 @@
 
 .specValue {
   color: #475467;
+}
+
+@media (min-width: 768px) {
+  .main {
+    padding: 32px var(--layout-padding-x, 64px) 64px;
+  }
+
+  .grid {
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 32px 40px;
+  }
+
+  .title {
+    font-size: 1.75rem;
+  }
+
+  .backLink {
+    width: auto;
+    min-width: 156px;
+    max-width: none;
+    height: 44px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .main {
+    padding: 84px 94px 124px 94px;
+  }
+
+  .grid {
+    gap: 40px 56px;
+  }
+
+  .title {
+    font-size: 2rem;
+  }
+
+  .price {
+    font-size: 2.5rem;
+  }
 }

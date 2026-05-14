@@ -4,8 +4,23 @@
   --background: #ffffff;
   --foreground: #171717;
   --layout-max-width: 1440px;
-  --layout-padding-x: 120px;
+  --layout-padding-x: 32px;
   --header-bar-height: 68px;
+  --bp-mobile-lg: 375px;
+  --bp-tablet: 768px;
+  --bp-desktop: 1440px;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --layout-padding-x: 64px;
+  }
+}
+
+@media (min-width: 1440px) {
+  :root {
+    --layout-padding-x: 94px;
+  }
 }
 
 @theme inline {

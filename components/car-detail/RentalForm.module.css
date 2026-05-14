@@ -14,13 +14,13 @@
   max-width: 640px;
   width: 100%;
   box-sizing: border-box;
-  padding: 32px;
+  padding: 20px 16px;
   background: #ffffff;
   border: 1px solid #dadde1;
   border-radius: 10px;
   display: flex;
   flex-direction: column;
-  gap: 24px;
+  gap: 20px;
 }
 
 .header {
@@ -135,4 +135,17 @@
 .submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 28px 28px;
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .card {
+    padding: 32px;
+  }
 }

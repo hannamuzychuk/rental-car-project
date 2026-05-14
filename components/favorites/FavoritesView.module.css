@@ -2,14 +2,14 @@
   box-sizing: border-box;
   max-width: var(--layout-max-width, 1440px);
   margin: 0 auto;
-  padding: 80px var(--layout-padding-x, 120px) 150px;
+  padding: 40px var(--layout-padding-x, 32px) 80px;
 }
 
 .title {
-  margin: 0 0 56px;
-  font-size: 32px;
+  margin: 0 0 32px;
+  font-size: 1.75rem;
   font-weight: 600;
-  line-height: 1;
+  line-height: 1.1;
   color: #101828;
 }
 
@@ -35,4 +35,34 @@
 .catalogLink:hover {
   color: #0b44cd;
   text-decoration: underline;
+}
+
+@media (min-width: 375px) {
+  .title {
+    margin-bottom: 36px;
+    font-size: 1.8125rem;
+  }
+}
+
+@media (min-width: 768px) {
+  .main {
+    padding-top: 56px;
+    padding-bottom: 110px;
+  }
+
+  .title {
+    margin-bottom: 40px;
+    font-size: 1.875rem;
+  }
+}
+
+@media (min-width: 1440px) {
+  .main {
+    padding: 84px 94px 124px 94px;
+  }
+
+  .title {
+    margin-bottom: 56px;
+    font-size: 2rem;
+  }
 }

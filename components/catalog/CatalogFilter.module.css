@@ -1,34 +1,32 @@
 .filters {
   display: flex;
-  flex-wrap: nowrap;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: stretch;
   gap: 16px;
-  margin-bottom: 56px;
+  margin-bottom: 40px;
 }
 
 .filterRow {
   display: flex;
-  flex-wrap: nowrap;
-  align-items: flex-end;
+  flex-direction: column;
+  align-items: stretch;
   gap: 16px;
-  flex: 0 0 auto;
+  width: 100%;
   min-width: 0;
-  max-width: 752px;
+  max-width: none;
 }
 
-.colBrand {
-  width: 204px;
-  flex-shrink: 0;
-}
-
-.colPrice {
-  width: 196px;
-  flex-shrink: 0;
-}
-
+.colBrand,
+.colPrice,
 .colMileage {
-  width: 320px;
+  width: 100%;
   flex-shrink: 0;
+}
+
+@media (min-width: 375px) {
+  .filters {
+    margin-bottom: 44px;
+  }
 }
 
 .field {
@@ -93,9 +91,9 @@
 
 .mileageShell {
   box-sizing: border-box;
-  border-radius: 14px;
-  background: #f3f3f3;
-  padding: 2px;
+  border-radius: 12px;
+  background: #f7f7f7;
+  padding: 0;
 }
 
 .mileagePair {
@@ -113,20 +111,20 @@
   min-width: 0;
   align-items: center;
   gap: 6px;
-  height: 48px;
-  padding: 0 18px 0 20px;
+  height: 44px;
+  padding: 0 16px 0 24px;
   margin: 0;
-  background: #fff;
+  background: #f7f7f7;
   cursor: text;
 }
 
 .mileageCellFrom {
-  border-right: 1px solid #e6e6e6;
-  border-radius: 12px 0 0 12px;
+  border-right: 1px solid #dadde1;
+  border-radius: 0;
 }
 
 .mileageCellTo {
-  border-radius: 0 12px 12px 0;
+  border-radius: 0;
 }
 
 .mileageCell:focus-within {
@@ -138,8 +136,8 @@
 .mileagePrefix,
 .mileagePrefixDim {
   flex-shrink: 0;
-  font-size: 18px;
-  line-height: 1.25;
+  font-size: 16px;
+  line-height: 20px;
   user-select: none;
 }
 
@@ -162,9 +160,9 @@
   padding: 0;
   border: none;
   background: transparent;
-  font-size: 18px;
+  font-size: 16px;
   font-weight: 500;
-  line-height: 1.25;
+  line-height: 20px;
   color: #101828;
   outline: none;
 }
@@ -181,9 +179,11 @@
 
 .actions {
   display: flex;
+  flex-direction: column;
   flex-shrink: 0;
-  align-items: center;
-  gap: 20px;
+  align-items: stretch;
+  gap: 12px;
+  width: 100%;
 }
 
 .favoritesLink {
@@ -192,7 +192,8 @@
   align-items: center;
   justify-content: center;
   flex-shrink: 0;
-  min-width: 156px;
+  width: 100%;
+  min-width: 0;
   height: 44px;
   padding: 0 24px;
   border-radius: 12px;
@@ -218,8 +219,9 @@
 }
 
 .apply {
+  box-sizing: border-box;
   flex-shrink: 0;
-  width: 156px;
+  width: 100%;
   height: 44px;
   border: none;
   border-radius: 12px;
@@ -263,10 +265,10 @@
   gap: 8px;
   width: 100%;
   height: 44px;
-  padding: 0 14px 0 18px;
-  border: 1px solid #f2f2f2;
+  padding: 0 14px 0 16px;
+  border: none;
   border-radius: 12px;
-  background: #fff;
+  background: #f7f7f7;
   font-size: 16px;
   line-height: 1.25;
   text-align: left;
@@ -359,4 +361,74 @@
   font-weight: 700;
   color: #101828;
   background: transparent;
+}
+
+@media (min-width: 768px) {
+  .filters {
+    margin-bottom: 48px;
+  }
+
+  .filterRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    gap: 16px;
+  }
+
+  .colMileage {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    width: auto;
+    gap: 16px;
+  }
+
+  .apply {
+    width: 156px;
+  }
+
+  .favoritesLink {
+    width: auto;
+    min-width: 156px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .filters {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    margin-bottom: 56px;
+  }
+
+  .filterRow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex: 0 0 auto;
+    max-width: 752px;
+    width: auto;
+  }
+
+  .colBrand {
+    width: 204px;
+  }
+
+  .colPrice {
+    width: 196px;
+  }
+
+  .colMileage {
+    width: 320px;
+  }
+
+  .actions {
+    flex-direction: row;
+    gap: 20px;
+  }
 }
