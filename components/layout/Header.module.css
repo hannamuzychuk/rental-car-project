@@ -1,5 +1,6 @@
 .bar {
   box-sizing: border-box;
+  flex-shrink: 0;
   min-height: var(--header-bar-height, 68px);
   border-bottom: 1px solid #e4e7ec;
   background: rgb(242, 244, 247);
@@ -48,8 +49,9 @@
   border-radius: 8px;
   font-size: 14px;
   font-weight: 500;
-  color: #475467;
+  color: #101828;
   text-decoration: none;
+  background: transparent;
   transition: background 0.15s ease, color 0.15s ease;
 }
 
@@ -60,12 +62,12 @@
 
 .linkActive {
   color: #3470ff;
-  background: #eff4ff;
+  background: transparent;
 }
 
 .linkActive:hover {
   color: #3470ff;
-  background: #e0eaff;
+  background: transparent;
 }
 
 @media (min-width: 768px) {

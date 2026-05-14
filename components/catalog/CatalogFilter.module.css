@@ -237,6 +237,11 @@
   background: #0b44cd;
 }
 
+.apply:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #3470ff;
+}
+
 .apply:disabled {
   opacity: 0.6;
   cursor: not-allowed;

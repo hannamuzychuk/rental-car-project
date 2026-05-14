@@ -185,10 +185,10 @@
 }
 
 .readMore:hover {
-  background: #2563eb;
+  background: #0b44cd;
 }
 
 .readMore:focus-visible {
-  outline: 2px solid #3470ff;
-  outline-offset: 2px;
+  outline: none;
+  box-shadow: 0 0 0 2px #3470ff;
 }

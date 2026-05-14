@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Hero } from "@/components/home/Hero";
+import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Home",
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function Home() {
   return (
-    <main>
+    <main className={`home-viewport-lock ${styles.wrap}`}>
       <Hero />
     </main>
   );

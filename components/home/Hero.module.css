@@ -2,7 +2,8 @@
   position: relative;
   display: flex;
   width: 100%;
-  min-height: min(100svh, 520px);
+  flex: 1;
+  min-height: 0;
   flex-direction: column;
   background-color: #18181b;
   background-image: url("/hero.webp");
@@ -26,8 +27,8 @@
   display: flex;
   width: 100%;
   max-width: var(--layout-max-width, 1440px);
-  min-height: min(100svh, 520px);
   flex: 1;
+  min-height: 0;
   flex-direction: column;
   align-items: center;
   /* Title 1:194: horizontal CENTER, vertical MAX */
@@ -43,7 +44,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  /* itemSpacing 40 */
   gap: 1.5rem;
 }
 
@@ -52,7 +52,6 @@
   width: 100%;
   flex-direction: column;
   align-items: center;
-  /* itemSpacing 16 */
   gap: 1rem;
   text-align: center;
 }
@@ -96,16 +95,16 @@
 }
 
 .catalogButton:hover {
-  filter: brightness(1.05);
+  background-color: #0b44cd;
+}
+
+.catalogButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #3470ff;
 }
 
 @media (min-width: 375px) {
-  .section {
-    min-height: min(100svh, 540px);
-  }
-
   .shell {
-    min-height: min(100svh, 540px);
     padding-bottom: 44px;
   }
 
@@ -115,12 +114,7 @@
 }
 
 @media (min-width: 768px) {
-  .section {
-    min-height: 600px;
-  }
-
   .shell {
-    min-height: 600px;
     padding-bottom: 48px;
   }
 
@@ -130,12 +124,7 @@
 }
 
 @media (min-width: 1440px) {
-  .section {
-    min-height: 700px;
-  }
-
   .shell {
-    min-height: 700px;
     padding-bottom: 60px;
   }
 

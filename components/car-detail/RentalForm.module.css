@@ -132,6 +132,15 @@
   cursor: pointer;
 }
 
+.submit:hover:not(:disabled) {
+  background: #0b44cd;
+}
+
+.submit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #3470ff;
+}
+
 .submit:disabled {
   opacity: 0.6;
   cursor: not-allowed;
