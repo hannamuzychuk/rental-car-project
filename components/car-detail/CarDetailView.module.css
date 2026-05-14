@@ -5,6 +5,45 @@
   padding: 40px var(--layout-padding-x, 120px) 80px;
 }
 
+.backRow {
+  margin-bottom: 24px;
+}
+
+.backLink {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  min-width: 156px;
+  height: 44px;
+  padding: 0 24px;
+  border-radius: 12px;
+  border: 1px solid #3470ff;
+  background: #fff;
+  color: #101828;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.backLink:hover {
+  border-color: #0b44cd;
+}
+
+.backLink:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #3470ff;
+}
+
+.backIcon {
+  flex-shrink: 0;
+  width: 18px;
+  height: 18px;
+}
+
 .grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);

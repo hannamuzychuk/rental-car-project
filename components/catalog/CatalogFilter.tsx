@@ -1,3 +1,4 @@
+import Link from "next/link";
 import { CatalogBrandSelect } from "./CatalogBrandSelect";
 import { CatalogMileageRange } from "./CatalogMileageRange";
 import { CatalogPriceSelect } from "./CatalogPriceSelect";
@@ -56,14 +57,19 @@ export function CatalogFilter({
         </div>
       </div>
 
-      <button
-        type="button"
-        className={styles.apply}
-        onClick={onSearch}
-        disabled={isBusy}
-      >
-        Search
-      </button>
+      <div className={styles.actions}>
+        <button
+          type="button"
+          className={styles.apply}
+          onClick={onSearch}
+          disabled={isBusy}
+        >
+          Search
+        </button>
+        <Link href="/favorites" className={styles.favoritesLink}>
+          Favorites
+        </Link>
+      </div>
     </section>
   );
 }

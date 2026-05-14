@@ -37,6 +37,7 @@ type BookingDatePickerProps = {
   onChange: (next: string) => void;
   disabled?: boolean;
   placeholder?: string;
+  invalid?: boolean;
 };
 
 export function BookingDatePicker({
@@ -45,6 +46,7 @@ export function BookingDatePicker({
   onChange,
   disabled,
   placeholder = "Booking date",
+  invalid = false,
 }: BookingDatePickerProps) {
   const id = useId();
   const rootRef = useRef<HTMLDivElement>(null);
@@ -93,7 +95,7 @@ export function BookingDatePicker({
       <button
         type="button"
         id={id}
-        className={styles.trigger}
+        className={`${styles.trigger} ${invalid ? styles.triggerInvalid : ""}`}
         disabled={disabled}
         aria-haspopup="dialog"
         aria-expanded={open}

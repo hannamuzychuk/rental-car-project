@@ -1,26 +1,29 @@
 import { NextResponse } from "next/server";
-
-type RentalBody = {
-  carId: string;
-  name: string;
-  email: string;
-  bookingDate: string;
-  comment: string;
-};
+import * as yup from "yup";
+import { rentalPostBodySchema } from "@/lib/rental-validation";
 
 export async function POST(request: Request) {
-  let body: RentalBody;
+  let raw: unknown;
   try {
-    body = (await request.json()) as RentalBody;
+    raw = await request.json();
   } catch {
     return NextResponse.json({ message: "Invalid JSON" }, { status: 400 });
   }
 
-  if (!body.carId?.trim() || !body.name?.trim() || !body.email?.trim()) {
-    return NextResponse.json(
-      { message: "carId, name and email are required" },
-      { status: 400 },
-    );
+  let body: yup.InferType<typeof rentalPostBodySchema>;
+  try {
+    body = await rentalPostBodySchema.validate(raw, {
+      abortEarly: false,
+      stripUnknown: true,
+    });
+  } catch (e) {
+    if (e instanceof yup.ValidationError) {
+      return NextResponse.json(
+        { message: e.errors.join(" ") || "Validation failed" },
+        { status: 400 },
+      );
+    }
+    throw e;
   }
 
   const upstream = process.env.RENTAL_UPSTREAM_URL?.trim();

@@ -32,6 +32,14 @@
   box-shadow: 0 0 0 2px #3470ff;
 }
 
+.triggerInvalid {
+  box-shadow: 0 0 0 2px #b42318;
+}
+
+.triggerInvalid:focus-visible {
+  box-shadow: 0 0 0 2px #b42318;
+}
+
 .dropdown {
   position: absolute;
   z-index: 50;

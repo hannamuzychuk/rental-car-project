@@ -58,6 +58,19 @@
   gap: 16px;
 }
 
+.fieldBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fieldError {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #b42318;
+}
+
 .input,
 .textarea {
   width: 100%;
@@ -84,6 +97,14 @@
 .input:focus-visible,
 .textarea:focus-visible {
   box-shadow: 0 0 0 2px #3470ff;
+}
+
+.inputInvalid {
+  box-shadow: 0 0 0 2px #b42318;
+}
+
+.inputInvalid:focus-visible {
+  box-shadow: 0 0 0 2px #b42318;
 }
 
 .textarea {

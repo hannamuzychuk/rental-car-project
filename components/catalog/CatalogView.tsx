@@ -7,10 +7,12 @@ import {
   useState,
   useSyncExternalStore,
 } from "react";
-import { useQuery } from "@tanstack/react-query";
+import { useInfiniteQuery } from "@tanstack/react-query";
+import { useRouter, useSearchParams } from "next/navigation";
 import { CatalogFilter, type CatalogFilterDraft } from "./CatalogFilter";
 import { getCarsList } from "@/lib/api/cars";
 import type { Car } from "@/lib/types/cars";
+import { buildCatalogSearch, parseCatalogFilters } from "@/lib/catalog-url";
 import {
   getFavoriteCarIdsSnapshot,
   getServerFavoriteCarIdsSnapshot,
@@ -22,15 +24,26 @@ import { CatalogCarGrid } from "./CatalogCarGrid";
 
 const PAGE_SIZE = 12;
 
-const emptyFilter: CatalogFilterDraft = {
-  brand: "",
-  rentalPrice: "",
-  minMileage: "",
-  maxMileage: "",
-};
-
 function filtersSignature(f: CatalogFilterDraft) {
   return `${f.brand}|${f.rentalPrice}|${f.minMileage}|${f.maxMileage}`;
+}
+
+type CatalogToolbarProps = {
+  filters: CatalogFilterDraft;
+  isBusy: boolean;
+  onApply: (next: CatalogFilterDraft) => void;
+};
+
+function CatalogToolbar({ filters, isBusy, onApply }: CatalogToolbarProps) {
+  const [draft, setDraft] = useState(filters);
+  return (
+    <CatalogFilter
+      draft={draft}
+      onDraftChange={setDraft}
+      onSearch={() => onApply(draft)}
+      isBusy={isBusy}
+    />
+  );
 }
 
 type CatalogPagedGridProps = {
@@ -46,45 +59,51 @@ function CatalogPagedGrid({
   onToggleFavorite,
   onSearchBusyChange,
 }: CatalogPagedGridProps) {
-  const [page, setPage] = useState(1);
-  const [cars, setCars] = useState<Car[]>([]);
-
-  const query = useQuery({
-    queryKey: ["cars", filters, page] as const,
-    queryFn: () =>
+  const query = useInfiniteQuery({
+    queryKey: ["cars", filters] as const,
+    initialPageParam: 1,
+    queryFn: ({ pageParam }) =>
       getCarsList({
-        page,
+        page: pageParam,
         limit: PAGE_SIZE,
         brand: filters.brand,
         rentalPrice: filters.rentalPrice,
         minMileage: filters.minMileage,
         maxMileage: filters.maxMileage,
       }),
+    getNextPageParam: (lastPage) => {
+      const current = Number(lastPage.page);
+      const total = Number(lastPage.totalPages);
+      if (!Number.isFinite(current) || !Number.isFinite(total)) return undefined;
+      return current < total ? current + 1 : undefined;
+    },
   });
 
-  useEffect(() => {
-    if (!query.data) return;
-    const incoming = query.data.cars;
-    setCars((prev) => {
-      if (page === 1) return incoming;
-      const seen = new Set(prev.map((c) => c.id));
-      return [...prev, ...incoming.filter((c) => !seen.has(c.id))];
-    });
-  }, [query.data, page]);
+  const cars = useMemo((): Car[] => {
+    const pages = query.data?.pages;
+    if (!pages?.length) return [];
+    return pages.flatMap((p) => p.cars);
+  }, [query.data?.pages]);
 
   useEffect(() => {
-    onSearchBusyChange(query.isFetching && !query.isPending && page === 1);
-  }, [query.isFetching, query.isPending, page, onSearchBusyChange]);
-
-  const totalPages = query.data?.totalPages ?? 0;
-  const hasMore = query.isSuccess && page < totalPages;
+    onSearchBusyChange(
+      query.isFetching && !query.isFetchingNextPage,
+    );
+  }, [
+    query.isFetching,
+    query.isFetchingNextPage,
+    onSearchBusyChange,
+  ]);
 
   const errorMessage =
     query.error instanceof Error ? query.error.message : "Try again.";
 
+  const showInitialLoading =
+    query.isPending && cars.length === 0;
+
   return (
     <>
-      {query.isPending && page === 1 && cars.length === 0 && (
+      {showInitialLoading && (
         <p className={styles.muted}>Loading...</p>
       )}
       {query.isError && (
@@ -101,14 +120,14 @@ function CatalogPagedGrid({
         favoriteIds={favoriteIds}
         onToggleFavorite={onToggleFavorite}
       />
-      {hasMore && (
+      {query.hasNextPage && (
         <button
           type="button"
           className={styles.loadMore}
-          onClick={() => setPage((p) => p + 1)}
-          disabled={query.isFetching}
+          onClick={() => void query.fetchNextPage()}
+          disabled={query.isFetchingNextPage}
         >
-          {query.isFetching && page > 1 ? "Loading..." : "Load more"}
+          {query.isFetchingNextPage ? "Loading..." : "Load more"}
         </button>
       )}
     </>
@@ -116,11 +135,27 @@ function CatalogPagedGrid({
 }
 
 export function CatalogView() {
-  const [filters, setFilters] = useState<CatalogFilterDraft>(emptyFilter);
-  const [draft, setDraft] = useState<CatalogFilterDraft>(emptyFilter);
-  const [searchBusy, setSearchBusy] = useState(false);
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const searchKey = searchParams.toString();
 
-  const filtersKey = useMemo(() => filtersSignature(filters), [filters]);
+  const filters = useMemo(
+    () => parseCatalogFilters(new URLSearchParams(searchKey)),
+    [searchKey],
+  );
+
+  useEffect(() => {
+    if (typeof window === "undefined") return;
+    try {
+      sessionStorage.setItem(
+        "catalog-last-path",
+        `/catalog${buildCatalogSearch(filters)}`,
+      );
+    } catch {
+    }
+  }, [filters]);
+
+  const [searchBusy, setSearchBusy] = useState(false);
 
   const favoritesSnapshot = useSyncExternalStore(
     subscribeFavoriteCarIds,
@@ -142,17 +177,24 @@ export function CatalogView() {
     [favoriteIds],
   );
 
+  const applySearch = useCallback(
+    (next: CatalogFilterDraft) => {
+      const q = buildCatalogSearch(next);
+      router.replace(`/catalog${q}`, { scroll: false });
+    },
+    [router],
+  );
+
   return (
     <main className={styles.main}>
       <h1 className={styles.title}>Catalog</h1>
-      <CatalogFilter
-        draft={draft}
-        onDraftChange={setDraft}
-        onSearch={() => setFilters(draft)}
+      <CatalogToolbar
+        key={filtersSignature(filters)}
+        filters={filters}
         isBusy={searchBusy}
+        onApply={applySearch}
       />
       <CatalogPagedGrid
-        key={filtersKey}
         filters={filters}
         favoriteIds={favoriteIds}
         onToggleFavorite={onToggleFavorite}

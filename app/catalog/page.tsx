@@ -1,5 +1,7 @@
 import type { Metadata } from "next";
+import { Suspense } from "react";
 import { CatalogView } from "@/components/catalog/CatalogView";
+import styles from "./page.module.css";
 
 export const metadata: Metadata = {
   title: "Catalog",
@@ -8,5 +10,9 @@ export const metadata: Metadata = {
 };
 
 export default function CatalogPage() {
-  return <CatalogView />;
+  return (
+    <Suspense fallback={<p className={styles.fallback}>Loading...</p>}>
+      <CatalogView />
+    </Suspense>
+  );
 }
