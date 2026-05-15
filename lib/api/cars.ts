@@ -1,13 +1,18 @@
-import type { Car, CarsListResponse } from "@/lib/types/cars";
+import { normalizeCar } from "@/lib/normalize-car";
+import type {
+  Car,
+  CarsFiltersResponse,
+  CarsListResponse,
+} from "@/lib/types/cars";
 
 const BASE_URL =
-  process.env.NEXT_PUBLIC_API_URL ?? "https://car-rental-api.goit.global";
+  process.env.NEXT_PUBLIC_API_URL ?? "https://car-rental-api.goit.study";
 
 export type CarsListParams = {
   page: number;
-  limit: number;
+  perPage: number;
   brand?: string;
-  rentalPrice?: string;
+  price?: string;
   minMileage?: string;
   maxMileage?: string;
 };
@@ -15,13 +20,13 @@ export type CarsListParams = {
 function getCarsSearchParams(params: CarsListParams): URLSearchParams {
   const search = new URLSearchParams();
   search.set("page", String(params.page));
-  search.set("limit", String(params.limit));
+  search.set("perPage", String(params.perPage));
 
   const brand = params.brand?.trim();
   if (brand) search.set("brand", brand);
 
-  const rentalPrice = params.rentalPrice?.trim();
-  if (rentalPrice) search.set("rentalPrice", rentalPrice);
+  const price = params.price?.trim();
+  if (price) search.set("price", price);
 
   const minMileage = params.minMileage?.trim();
   if (minMileage) search.set("minMileage", minMileage);
@@ -47,6 +52,7 @@ export const getCarsList = async (
   const data = (await response.json()) as CarsListResponse;
   return {
     ...data,
+    cars: data.cars.map((car) => normalizeCar(car)),
     page: Number(data.page),
     totalPages: Number(data.totalPages),
     totalCars: Number(data.totalCars),
@@ -69,5 +75,68 @@ export const getCarById = async (id: string): Promise<Car> => {
     throw new Error(`GET /cars/${id} failed: ${response.status}`);
   }
 
-  return response.json() as Promise<Car>;
+  const raw = (await response.json()) as Car;
+  return normalizeCar(raw);
 };
+
+export const getCarsFilters = async (): Promise<CarsFiltersResponse> => {
+  const response = await fetch(`${BASE_URL}/cars/filters`, {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    throw new Error(`GET /cars/filters failed: ${response.status}`);
+  }
+
+  return response.json() as Promise<CarsFiltersResponse>;
+};
+
+export type BookingRequestPayload = {
+  name: string;
+  email: string;
+  comment?: string;
+};
+
+export type BookingRequestResponse = {
+  message: string;
+};
+
+export async function createBookingRequest(
+  carId: string,
+  payload: BookingRequestPayload,
+): Promise<BookingRequestResponse> {
+  const response = await fetch(
+    `${BASE_URL}/cars/${encodeURIComponent(carId)}/booking-requests`,
+    {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        name: payload.name,
+        email: payload.email,
+        comment: payload.comment ?? "",
+      }),
+    },
+  );
+
+  const text = await response.text();
+  let data: BookingRequestResponse | { message?: string } = { message: text };
+
+  try {
+    data = JSON.parse(text) as BookingRequestResponse;
+  } catch {
+  }
+
+  if (!response.ok) {
+    const message =
+      typeof data.message === "string" && data.message
+        ? data.message
+        : text || `POST /cars/${carId}/booking-requests failed: ${response.status}`;
+    throw new Error(message);
+  }
+
+  if (typeof data.message !== "string" || !data.message) {
+    return { message: "Booking submitted successfully." };
+  }
+
+  return { message: data.message };
+}

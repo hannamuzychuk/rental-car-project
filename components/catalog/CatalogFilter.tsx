@@ -6,7 +6,7 @@ import styles from "./CatalogFilter.module.css";
 
 export type CatalogFilterDraft = {
   brand: string;
-  rentalPrice: string;
+  price: string;
   minMileage: string;
   maxMileage: string;
 };
@@ -37,10 +37,8 @@ export function CatalogFilter({
 
         <div className={styles.colPrice}>
           <CatalogPriceSelect
-            value={draft.rentalPrice}
-            onChange={(rentalPrice) =>
-              onDraftChange({ ...draft, rentalPrice })
-            }
+            value={draft.price}
+            onChange={(price) => onDraftChange({ ...draft, price })}
             disabled={isBusy}
           />
         </div>

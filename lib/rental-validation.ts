@@ -31,18 +31,10 @@ const rentalFields = {
     .required("Email is required")
     .email("Enter a valid email address"),
   bookingDate: bookingDateField,
-  comment: yup.string().strip(),
+  comment: yup.string().default(""),
 } as const;
 
 export const rentalFormValuesSchema = yup.object({
-  name: rentalFields.name,
-  email: rentalFields.email,
-  bookingDate: rentalFields.bookingDate,
-  comment: rentalFields.comment,
-});
-
-export const rentalPostBodySchema = yup.object({
-  carId: yup.string().trim().required("carId is required"),
   name: rentalFields.name,
   email: rentalFields.email,
   bookingDate: rentalFields.bookingDate,
@@ -56,4 +48,11 @@ export type RentalFormValues = {
   comment: string;
 };
 
-export type RentalPostBody = yup.InferType<typeof rentalPostBodySchema>;
+export function buildBookingComment(
+  bookingDate: string,
+  comment: string,
+): string {
+  const dateLine = `Preferred booking date: ${bookingDate}`;
+  const trimmed = comment.trim();
+  return trimmed ? `${dateLine}\n\n${trimmed}` : dateLine;
+}

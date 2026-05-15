@@ -25,7 +25,7 @@ import { CatalogCarGrid } from "./CatalogCarGrid";
 const PAGE_SIZE = 12;
 
 function filtersSignature(f: CatalogFilterDraft) {
-  return `${f.brand}|${f.rentalPrice}|${f.minMileage}|${f.maxMileage}`;
+  return `${f.brand}|${f.price}|${f.minMileage}|${f.maxMileage}`;
 }
 
 type CatalogToolbarProps = {
@@ -65,9 +65,9 @@ function CatalogPagedGrid({
     queryFn: ({ pageParam }) =>
       getCarsList({
         page: pageParam,
-        limit: PAGE_SIZE,
+        perPage: PAGE_SIZE,
         brand: filters.brand,
-        rentalPrice: filters.rentalPrice,
+        price: filters.price,
         minMileage: filters.minMileage,
         maxMileage: filters.maxMileage,
       }),

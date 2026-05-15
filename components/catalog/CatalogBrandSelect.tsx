@@ -28,7 +28,7 @@ export function CatalogBrandSelect({
   disabled,
 }: CatalogBrandSelectProps) {
   const brandsQuery = useQuery({
-    queryKey: ["brands"],
+    queryKey: ["car-filters", "brands"],
     queryFn: () => getBrandsList(),
   });
 

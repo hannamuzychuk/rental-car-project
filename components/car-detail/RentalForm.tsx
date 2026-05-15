@@ -2,7 +2,9 @@
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { toast } from "sonner";
+import { createBookingRequest } from "@/lib/api/cars";
 import {
+  buildBookingComment,
   rentalFormValuesSchema,
   type RentalFormValues,
 } from "@/lib/rental-validation";
@@ -41,36 +43,22 @@ export function RentalForm({ carId, embedded = false }: RentalFormProps) {
           validateOnChange={false}
           onSubmit={async (values, { resetForm, setSubmitting }) => {
             const submit = async () => {
-              const res = await fetch("/api/rental", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({
-                  carId,
-                  name: values.name,
-                  email: values.email,
-                  bookingDate: values.bookingDate,
-                  comment: values.comment ?? "",
-                }),
+              const { message } = await createBookingRequest(carId, {
+                name: values.name,
+                email: values.email,
+                comment: buildBookingComment(
+                  values.bookingDate,
+                  values.comment,
+                ),
               });
-
-              if (!res.ok) {
-                const text = await res.text();
-                let message = text || `Request failed: ${res.status}`;
-                try {
-                  const data = JSON.parse(text) as { message?: string };
-                  if (typeof data.message === "string") message = data.message;
-                } catch {
-                }
-                throw new Error(message);
-              }
-
               resetForm();
+              return message;
             };
 
             try {
               await toast.promise(submit(), {
                 loading: "Sending booking…",
-                success: "Booking submitted successfully.",
+                success: (message) => message,
                 error: (err) =>
                   err instanceof Error ? err.message : "Something went wrong",
               });
@@ -79,7 +67,14 @@ export function RentalForm({ carId, embedded = false }: RentalFormProps) {
             }
           }}
         >
-          {({ isSubmitting, values, errors, touched, setFieldValue, setFieldTouched }) => (
+          {({
+            isSubmitting,
+            values,
+            errors,
+            touched,
+            setFieldValue,
+            setFieldTouched,
+          }) => (
             <Form className={styles.form} noValidate>
               <div className={styles.fields}>
                 <div className={styles.fieldBlock}>

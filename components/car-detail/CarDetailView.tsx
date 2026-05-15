@@ -1,3 +1,4 @@
+import { formatCarLocationLine, getCarLocation } from "@/lib/car-location";
 import type { Car } from "@/lib/types/cars";
 import {
   LuCalendar,
@@ -35,13 +36,11 @@ export function CarDetailView({ car }: { car: Car }) {
   const heading = `${car.brand} ${car.model}, ${car.year}`;
   const mileageLabel = groupThousandsWithCommas(car.mileage);
 
-  const accessoriesAndFeatures = [...car.accessories, ...car.functionalities];
-
   const specRows = [
     { icon: LuCalendar, label: "Year", value: String(car.year) },
     { icon: LuCar, label: "Type", value: car.type },
     { icon: LuFuel, label: "Fuel Consumption", value: car.fuelConsumption },
-    { icon: LuCog, label: "Engine Size", value: car.engineSize },
+    { icon: LuCog, label: "Engine", value: car.engine },
   ] as const;
 
   return (
@@ -63,7 +62,7 @@ export function CarDetailView({ car }: { car: Car }) {
 
           <div className={styles.meta}>
             <LuMapPin className={styles.metaIcon} aria-hidden />
-            <span>{car.address}</span>
+            <span>{formatCarLocationLine(getCarLocation(car))}</span>
             <span className={styles.metaDot} aria-hidden />
             <span>Mileage: {mileageLabel} km</span>
           </div>
@@ -90,12 +89,10 @@ export function CarDetailView({ car }: { car: Car }) {
             </ul>
           </section>
 
-          {accessoriesAndFeatures.length > 0 && (
+          {(car.features?.length ?? 0) > 0 && (
             <section className={styles.block}>
-              <h2 className={styles.blockTitle}>
-                Accessories and functionalities:
-              </h2>
-              <CheckList items={accessoriesAndFeatures} />
+              <h2 className={styles.blockTitle}>Features:</h2>
+              <CheckList items={car.features ?? []} />
             </section>
           )}
         </div>

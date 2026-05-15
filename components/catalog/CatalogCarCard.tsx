@@ -1,5 +1,6 @@
 "use client";
 
+import { getCarLocation } from "@/lib/car-location";
 import type { Car } from "@/lib/types/cars";
 import { FaHeart } from "react-icons/fa";
 import styles from "./CatalogCarCard.module.css";
@@ -10,23 +11,6 @@ function formatMileageKm(value: number) {
   return `${Math.trunc(value)
     .toString()
     .replace(/\B(?=(\d{3})+(?!\d))/g, " ")} km`;
-}
-
-function parseAddressCityCountry(address: string): {
-  city: string;
-  country: string;
-} {
-  const parts = address
-    .split(",")
-    .map((p) => p.trim())
-    .filter(Boolean);
-  if (parts.length === 0) return { city: "", country: "" };
-  if (parts.length === 1) return { city: parts[0], country: "" };
-  if (parts.length === 2) return { city: parts[0], country: parts[1] };
-  return {
-    city: parts[parts.length - 2] ?? "",
-    country: parts[parts.length - 1] ?? "",
-  };
 }
 
 type CatalogCarCardProps = {
@@ -42,7 +26,7 @@ export function CatalogCarCard({
 }: CatalogCarCardProps) {
   const label = `${car.brand} ${car.model}, ${car.year}`;
   const mileageLabel = formatMileageKm(car.mileage);
-  const { city, country } = parseAddressCityCountry(car.address);
+  const { city, country } = getCarLocation(car);
 
   return (
     <li className={styles.card}>

@@ -4,8 +4,8 @@ export function buildCatalogSearch(filters: CatalogFilterDraft): string {
   const sp = new URLSearchParams();
   const brand = filters.brand.trim();
   if (brand) sp.set("brand", brand);
-  const rentalPrice = filters.rentalPrice.trim();
-  if (rentalPrice) sp.set("rentalPrice", rentalPrice);
+  const price = filters.price.trim();
+  if (price) sp.set("price", price);
   const minMileage = filters.minMileage.trim();
   if (minMileage) sp.set("minMileage", minMileage);
   const maxMileage = filters.maxMileage.trim();
@@ -17,7 +17,7 @@ export function buildCatalogSearch(filters: CatalogFilterDraft): string {
 export function parseCatalogFilters(sp: URLSearchParams): CatalogFilterDraft {
   return {
     brand: sp.get("brand") ?? "",
-    rentalPrice: sp.get("rentalPrice") ?? "",
+    price: sp.get("price") ?? sp.get("rentalPrice") ?? "",
     minMileage: sp.get("minMileage") ?? "",
     maxMileage: sp.get("maxMileage") ?? "",
   };
