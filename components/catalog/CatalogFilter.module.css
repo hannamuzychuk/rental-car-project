@@ -389,7 +389,8 @@
     flex-direction: row;
     flex-wrap: wrap;
     align-items: center;
-    width: auto;
+    justify-content: center;
+    width: 100%;
     gap: 16px;
   }
 
@@ -408,6 +409,8 @@
     flex-direction: row;
     flex-wrap: nowrap;
     align-items: flex-end;
+    justify-content: center;
+    width: 100%;
     margin-bottom: 56px;
   }
 
@@ -434,6 +437,8 @@
 
   .actions {
     flex-direction: row;
+    justify-content: flex-start;
+    width: auto;
     gap: 20px;
   }
 }
