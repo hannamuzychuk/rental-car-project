@@ -1,5 +1,6 @@
 "use client";
 
+import { mileageDigits, normalizeMileageDraft } from "@/lib/catalog-mileage";
 import { useCallback, useId, useRef, useState } from "react";
 import styles from "./CatalogFilter.module.css";
 
@@ -9,10 +10,6 @@ type CatalogMileageRangeProps = {
   disabled?: boolean;
   onChange: (next: { minMileage: string; maxMileage: string }) => void;
 };
-
-function onlyDigits(s: string): string {
-  return s.replace(/\D/g, "").slice(0, 9);
-}
 
 function formatWithCommas(digits: string): string {
   if (!digits) return "";
@@ -39,8 +36,8 @@ export function CatalogMileageRange({
   const minTypingRef = useRef(false);
   const maxTypingRef = useRef(false);
 
-  const minDigits = onlyDigits(minMileage);
-  const maxDigits = onlyDigits(maxMileage);
+  const minDigits = mileageDigits(minMileage);
+  const maxDigits = mileageDigits(maxMileage);
 
   const minDigitsForDisplay = minFocused ? minEdit : minDigits;
   const maxDigitsForDisplay = maxFocused ? maxEdit : maxDigits;
@@ -49,10 +46,11 @@ export function CatalogMileageRange({
 
   const commit = useCallback(
     (next: { minMileage?: string; maxMileage?: string }) => {
-      onChange({
-        minMileage: next.minMileage ?? minMileage,
-        maxMileage: next.maxMileage ?? maxMileage,
-      });
+      const merged = normalizeMileageDraft(
+        next.minMileage ?? minMileage,
+        next.maxMileage ?? maxMileage,
+      );
+      onChange(merged);
     },
     [onChange, minMileage, maxMileage],
   );
@@ -86,7 +84,7 @@ export function CatalogMileageRange({
               value={minShown}
               onChange={(e) => {
                 if (!minTypingRef.current) return;
-                setMinEdit(onlyDigits(e.target.value));
+                setMinEdit(mileageDigits(e.target.value));
               }}
               onFocus={() => {
                 minTypingRef.current = true;
@@ -95,7 +93,7 @@ export function CatalogMileageRange({
               }}
               onBlur={(e) => {
                 minTypingRef.current = false;
-                const next = onlyDigits(e.currentTarget.value);
+                const next = mileageDigits(e.currentTarget.value);
                 setMinFocused(false);
                 commit({ minMileage: next });
               }}
@@ -124,7 +122,7 @@ export function CatalogMileageRange({
               value={maxShown}
               onChange={(e) => {
                 if (!maxTypingRef.current) return;
-                setMaxEdit(onlyDigits(e.target.value));
+                setMaxEdit(mileageDigits(e.target.value));
               }}
               onFocus={() => {
                 maxTypingRef.current = true;
@@ -133,7 +131,7 @@ export function CatalogMileageRange({
               }}
               onBlur={(e) => {
                 maxTypingRef.current = false;
-                const next = onlyDigits(e.currentTarget.value);
+                const next = mileageDigits(e.currentTarget.value);
                 setMaxFocused(false);
                 commit({ maxMileage: next });
               }}

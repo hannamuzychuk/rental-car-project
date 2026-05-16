@@ -12,6 +12,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { CatalogFilter, type CatalogFilterDraft } from "./CatalogFilter";
 import { getCarsList } from "@/lib/api/cars";
 import type { Car } from "@/lib/types/cars";
+import { normalizeMileageDraft } from "@/lib/catalog-mileage";
 import { buildCatalogSearch, parseCatalogFilters } from "@/lib/catalog-url";
 import {
   getFavoriteCarIdsSnapshot,
@@ -179,7 +180,8 @@ export function CatalogView() {
 
   const applySearch = useCallback(
     (next: CatalogFilterDraft) => {
-      const q = buildCatalogSearch(next);
+      const mileage = normalizeMileageDraft(next.minMileage, next.maxMileage);
+      const q = buildCatalogSearch({ ...next, ...mileage });
       router.replace(`/catalog${q}`, { scroll: false });
     },
     [router],

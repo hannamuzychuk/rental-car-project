@@ -1,3 +1,4 @@
+import { normalizeMileageForApi } from "@/lib/catalog-mileage";
 import { normalizeCar } from "@/lib/normalize-car";
 import type {
   Car,
@@ -28,11 +29,12 @@ function getCarsSearchParams(params: CarsListParams): URLSearchParams {
   const price = params.price?.trim();
   if (price) search.set("price", price);
 
-  const minMileage = params.minMileage?.trim();
-  if (minMileage) search.set("minMileage", minMileage);
-
-  const maxMileage = params.maxMileage?.trim();
-  if (maxMileage) search.set("maxMileage", maxMileage);
+  const mileage = normalizeMileageForApi(
+    params.minMileage ?? "",
+    params.maxMileage ?? "",
+  );
+  if (mileage.minMileage) search.set("minMileage", mileage.minMileage);
+  if (mileage.maxMileage) search.set("maxMileage", mileage.maxMileage);
 
   return search;
 }

@@ -1,4 +1,5 @@
 import type { CatalogFilterDraft } from "@/components/catalog/CatalogFilter";
+import { normalizeMileageDraft } from "@/lib/catalog-mileage";
 
 export function buildCatalogSearch(filters: CatalogFilterDraft): string {
   const sp = new URLSearchParams();
@@ -6,20 +7,25 @@ export function buildCatalogSearch(filters: CatalogFilterDraft): string {
   if (brand) sp.set("brand", brand);
   const price = filters.price.trim();
   if (price) sp.set("price", price);
-  const minMileage = filters.minMileage.trim();
+  const { minMileage, maxMileage } = normalizeMileageDraft(
+    filters.minMileage,
+    filters.maxMileage,
+  );
   if (minMileage) sp.set("minMileage", minMileage);
-  const maxMileage = filters.maxMileage.trim();
   if (maxMileage) sp.set("maxMileage", maxMileage);
   const q = sp.toString();
   return q ? `?${q}` : "";
 }
 
 export function parseCatalogFilters(sp: URLSearchParams): CatalogFilterDraft {
+  const mileage = normalizeMileageDraft(
+    sp.get("minMileage") ?? "",
+    sp.get("maxMileage") ?? "",
+  );
   return {
     brand: sp.get("brand") ?? "",
     price: sp.get("price") ?? sp.get("rentalPrice") ?? "",
-    minMileage: sp.get("minMileage") ?? "",
-    maxMileage: sp.get("maxMileage") ?? "",
+    ...mileage,
   };
 }
 

@@ -1,4 +1,8 @@
-import { formatCarLocationLine, getCarLocation } from "@/lib/car-location";
+import { getCarDisplayIdFromImg } from "@/lib/car-image-id";
+import {
+  formatCarLocationShort,
+  getCarLocation,
+} from "@/lib/car-location";
 import type { Car } from "@/lib/types/cars";
 import {
   LuCalendar,
@@ -12,11 +16,11 @@ import { BackToCatalogLink } from "./BackToCatalogLink";
 import { RentalForm } from "./RentalForm";
 import styles from "./CarDetailView.module.css";
 
-function groupThousandsWithCommas(value: number) {
+function groupThousandsWithSpaces(value: number) {
   if (!Number.isFinite(value)) return "";
   return Math.trunc(value)
     .toString()
-    .replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+    .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
 function CheckList({ items }: { items: string[] }) {
@@ -34,7 +38,8 @@ function CheckList({ items }: { items: string[] }) {
 
 export function CarDetailView({ car }: { car: Car }) {
   const heading = `${car.brand} ${car.model}, ${car.year}`;
-  const mileageLabel = groupThousandsWithCommas(car.mileage);
+  const mileageLabel = groupThousandsWithSpaces(car.mileage);
+  const displayId = getCarDisplayIdFromImg(car.img) ?? car.id;
 
   const specRows = [
     { icon: LuCalendar, label: "Year", value: String(car.year) },
@@ -57,13 +62,14 @@ export function CarDetailView({ car }: { car: Car }) {
         <div className={styles.right}>
           <div className={styles.titleRow}>
             <h1 className={styles.title}>{heading}</h1>
-            <span className={styles.id}>id: {car.id}</span>
+            <span className={styles.id}>id: {displayId}</span>
           </div>
 
           <div className={styles.meta}>
-            <LuMapPin className={styles.metaIcon} aria-hidden />
-            <span>{formatCarLocationLine(getCarLocation(car))}</span>
-            <span className={styles.metaDot} aria-hidden />
+            <span className={styles.metaLocation}>
+              <LuMapPin className={styles.metaIcon} aria-hidden />
+              <span>{formatCarLocationShort(getCarLocation(car))}</span>
+            </span>
             <span>Mileage: {mileageLabel} km</span>
           </div>
 
@@ -91,7 +97,9 @@ export function CarDetailView({ car }: { car: Car }) {
 
           {(car.features?.length ?? 0) > 0 && (
             <section className={styles.block}>
-              <h2 className={styles.blockTitle}>Features:</h2>
+              <h2 className={styles.blockTitle}>
+                Accessories and functionalities:
+              </h2>
               <CheckList items={car.features ?? []} />
             </section>
           )}

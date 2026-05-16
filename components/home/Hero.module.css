@@ -31,7 +31,6 @@
   min-height: 0;
   flex-direction: column;
   align-items: center;
-  /* Title 1:194: horizontal CENTER, vertical MAX */
   justify-content: flex-end;
   margin-inline: auto;
   padding: 0 var(--layout-padding-x, 32px) 40px;
@@ -44,7 +43,7 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.5rem;
+  gap: 24px;
 }
 
 .textBlock {
@@ -59,18 +58,18 @@
 .title {
   margin: 0;
   max-width: 783px;
-  font-size: clamp(1.75rem, 6vw + 0.5rem, 3.5rem);
-  line-height: 1.125;
+  font-size: 60px;
+  line-height: 1.2;
   font-weight: 700;
   color: #fff;
 }
 
 .subtitle {
   margin: 0;
-  max-width: 585px;
-  font-size: 1rem;
-  line-height: 2;
-  font-weight: 400;
+  /* max-width: 585px; */
+  font-size: 24px;
+  line-height: 1.33;
+  font-weight: 600;
   color: #fff;
 }
 
@@ -129,7 +128,7 @@
   }
 
   .inner {
-    gap: 2.5rem;
+    gap: 40px;
   }
 
   .catalogButton {

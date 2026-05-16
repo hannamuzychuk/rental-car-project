@@ -41,3 +41,12 @@ export function formatCarLocationLine(location: CarLocation): string {
     .filter(Boolean)
     .join(", ");
 }
+
+export function formatCarLocationShort(location: CarLocation): string {
+  const city = location.city?.trim() ?? "";
+  const country = location.country?.trim() ?? "";
+  if (city && country) return `${city}, ${country}`;
+  if (city) return city;
+  if (country) return country;
+  return formatCarLocationLine(location);
+}
