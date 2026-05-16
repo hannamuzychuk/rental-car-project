@@ -1,0 +1,444 @@
+.filters {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  margin-bottom: 40px;
+}
+
+.filterRow {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 16px;
+  width: 100%;
+  min-width: 0;
+  max-width: none;
+}
+
+.colBrand,
+.colPrice,
+.colMileage {
+  width: 100%;
+  flex-shrink: 0;
+}
+
+@media (min-width: 375px) {
+  .filters {
+    margin-bottom: 44px;
+  }
+}
+
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.label {
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 1.14;
+  color: #8d929a;
+}
+
+.field input,
+.field select {
+  box-sizing: border-box;
+  width: 100%;
+  height: 44px;
+  padding: 0 16px;
+  border: none;
+  border-radius: 12px;
+  background: #f7f7f7;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #101828;
+  outline: none;
+}
+
+.field input::placeholder {
+  color: #8d929a;
+}
+
+.field input:focus-visible,
+.field select:focus-visible {
+  box-shadow: 0 0 0 2px #3470ff;
+}
+
+.field select {
+  appearance: none;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 16 16' fill='none'%3E%3Cpath d='M4 6l4 4 4-4' stroke='%23101828' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 12px center;
+  padding-right: 40px;
+  cursor: pointer;
+}
+
+.field select:disabled,
+.field input:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+/* Car mileage — grouped pill (UI kit), white cells + divider, optional grey shell */
+.mileageBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.mileageShell {
+  box-sizing: border-box;
+  border-radius: 12px;
+  background: #f7f7f7;
+  padding: 0;
+}
+
+.mileagePair {
+  display: flex;
+  width: 100%;
+  gap: 0;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.mileageCell {
+  box-sizing: border-box;
+  display: flex;
+  flex: 1;
+  min-width: 0;
+  align-items: center;
+  gap: 6px;
+  height: 44px;
+  padding: 0 16px 0 24px;
+  margin: 0;
+  background: #f7f7f7;
+  cursor: text;
+}
+
+.mileageCellFrom {
+  border-right: 1px solid #dadde1;
+  border-radius: 0;
+}
+
+.mileageCellTo {
+  border-radius: 0;
+}
+
+.mileageCell:focus-within {
+  position: relative;
+  z-index: 1;
+  box-shadow: inset 0 0 0 2px #3470ff;
+}
+
+.mileagePrefix,
+.mileagePrefixDim {
+  flex-shrink: 0;
+  font-size: 16px;
+  line-height: 20px;
+  user-select: none;
+}
+
+.mileagePrefix {
+  font-weight: 500;
+  color: #101828;
+}
+
+.mileagePrefixDim {
+  font-weight: 400;
+  color: #8d929a;
+}
+
+.mileageInputPart {
+  box-sizing: border-box;
+  flex: 1;
+  min-width: 0;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: transparent;
+  font-size: 16px;
+  font-weight: 500;
+  line-height: 20px;
+  color: #101828;
+  outline: none;
+}
+
+.mileageInputPart::placeholder {
+  color: #8d929a;
+  font-weight: 400;
+}
+
+.mileageCell:has(.mileageInputPart:disabled) {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.actions {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+  align-items: stretch;
+  gap: 12px;
+  width: 100%;
+}
+
+.favoritesLink {
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  width: 100%;
+  min-width: 0;
+  height: 44px;
+  padding: 0 24px;
+  border-radius: 12px;
+  border: 1px solid #3470ff;
+  background: #fff;
+  color: #101828;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  text-decoration: none;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.favoritesLink:hover {
+  border-color: #0b44cd;
+  text-decoration: none;
+}
+
+.favoritesLink:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #3470ff;
+}
+
+.apply {
+  box-sizing: border-box;
+  flex-shrink: 0;
+  width: 100%;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  background: #3470ff;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  cursor: pointer;
+}
+
+.apply:hover:not(:disabled) {
+  background: #0b44cd;
+}
+
+.apply:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #3470ff;
+}
+
+.apply:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.error {
+  margin: 8px 0 0;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #b42318;
+}
+
+.filterCombo {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.filterTrigger {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  width: 100%;
+  height: 44px;
+  padding: 0 14px 0 16px;
+  border: none;
+  border-radius: 12px;
+  background: #f7f7f7;
+  font-size: 16px;
+  line-height: 1.25;
+  text-align: left;
+  cursor: pointer;
+  outline: none;
+}
+
+.filterTrigger:focus-visible {
+  box-shadow: 0 0 0 2px #3470ff;
+}
+
+.filterTrigger:disabled {
+  opacity: 0.65;
+  cursor: not-allowed;
+}
+
+.filterTriggerValue,
+.filterTriggerPlaceholder {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  color: #101828;
+}
+
+.filterTriggerPlaceholder {
+  color: #101828;
+}
+
+.filterChevron {
+  flex-shrink: 0;
+  width: 16px;
+  height: 16px;
+  color: #101828;
+}
+
+.filterList {
+  position: absolute;
+  z-index: 50;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  margin: 0;
+  padding: 8px 0;
+  list-style: none;
+  max-height: 272px;
+  overflow-y: auto;
+  border-radius: 12px;
+  background: #fff;
+  box-sizing: border-box;
+  border: 1px solid #f0f0f0;
+  box-shadow: 0 4px 24px rgba(16, 24, 40, 0.06);
+  scrollbar-width: thin;
+  scrollbar-color: #dadde1 transparent;
+}
+
+.filterList::-webkit-scrollbar {
+  width: 6px;
+}
+
+.filterList::-webkit-scrollbar-thumb {
+  background: #dadde1;
+  border-radius: 10px;
+}
+
+.filterOption,
+.filterOptionActive,
+.filterOptionSelected {
+  margin: 0;
+  padding: 10px 18px;
+  font-size: 16px;
+  line-height: 20px;
+  cursor: pointer;
+  user-select: none;
+}
+
+.filterOption {
+  font-weight: 400;
+  color: #8d929a;
+}
+
+.filterOptionActive {
+  font-weight: 400;
+  color: #8d929a;
+  background: #f7f7f7;
+}
+
+.filterOptionSelected {
+  font-weight: 700;
+  color: #101828;
+  background: transparent;
+}
+
+@media (min-width: 768px) {
+  .filters {
+    margin-bottom: 48px;
+  }
+
+  .filterRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: end;
+    gap: 16px;
+  }
+
+  .colMileage {
+    grid-column: 1 / -1;
+    width: 100%;
+  }
+
+  .actions {
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    gap: 16px;
+  }
+
+  .apply {
+    width: 156px;
+  }
+
+  .favoritesLink {
+    width: auto;
+    min-width: 156px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .filters {
+    flex-direction: row;
+    flex-wrap: nowrap;
+    align-items: flex-end;
+    justify-content: center;
+    width: 100%;
+    margin-bottom: 56px;
+  }
+
+  .filterRow {
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    flex: 0 0 auto;
+    max-width: 752px;
+    width: auto;
+  }
+
+  .colBrand {
+    width: 204px;
+  }
+
+  .colPrice {
+    width: 196px;
+  }
+
+  .colMileage {
+    width: 320px;
+  }
+
+  .actions {
+    flex-direction: row;
+    justify-content: flex-start;
+    width: auto;
+    gap: 20px;
+  }
+}

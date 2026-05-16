@@ -1,0 +1,1 @@
+export type BrandsListResponse = string[] | { brands: string[] };

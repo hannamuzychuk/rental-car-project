@@ -1,0 +1,160 @@
+.wrap {
+  margin-top: 32px;
+}
+
+.embedded {
+  margin-top: 0;
+}
+
+.embedded .card {
+  max-width: none;
+}
+
+.card {
+  max-width: 640px;
+  width: 100%;
+  box-sizing: border-box;
+  padding: 20px 16px;
+  background: #ffffff;
+  border: 1px solid #dadde1;
+  border-radius: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.title {
+  margin: 0;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 1;
+  color: #101828;
+}
+
+.supporting {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.43;
+  font-weight: 400;
+  color: #8d929a;
+}
+
+.form {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  margin: 0;
+}
+
+.fields {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.fieldBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.fieldError {
+  margin: 0;
+  font-size: 13px;
+  line-height: 1.35;
+  color: #b42318;
+}
+
+.input,
+.textarea {
+  width: 100%;
+  box-sizing: border-box;
+  border: none;
+  border-radius: 12px;
+  background: #f7f7f7;
+  font-size: 16px;
+  line-height: 1.25;
+  color: #101828;
+  outline: none;
+}
+
+.input {
+  height: 48px;
+  padding: 0 20px;
+}
+
+.input::placeholder,
+.textarea::placeholder {
+  color: #8d929a;
+}
+
+.input:focus-visible,
+.textarea:focus-visible {
+  box-shadow: 0 0 0 2px #3470ff;
+}
+
+.inputInvalid {
+  box-shadow: 0 0 0 2px #b42318;
+}
+
+.inputInvalid:focus-visible {
+  box-shadow: 0 0 0 2px #b42318;
+}
+
+.textarea {
+  min-height: 88px;
+  padding: 14px 20px;
+  resize: vertical;
+  font-family: inherit;
+}
+
+.actions {
+  display: flex;
+  justify-content: center;
+}
+
+.submit {
+  width: 156px;
+  height: 44px;
+  border: none;
+  border-radius: 12px;
+  background: #3470ff;
+  color: #ffffff;
+  font-size: 16px;
+  font-weight: 600;
+  line-height: 1.25;
+  cursor: pointer;
+}
+
+.submit:hover:not(:disabled) {
+  background: #0b44cd;
+}
+
+.submit:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #3470ff;
+}
+
+.submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+@media (min-width: 768px) {
+  .card {
+    padding: 28px 28px;
+    gap: 24px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .card {
+    padding: 32px;
+  }
+}

@@ -1,0 +1,8 @@
+.root {
+  box-sizing: border-box;
+  display: flex;
+  width: 100%;
+  min-height: 0;
+  flex: 1;
+  flex-direction: column;
+}
