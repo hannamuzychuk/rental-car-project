@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import { Container } from "@/components/layout/Container";
 import { Header } from "@/components/layout/Header";
+import { getSiteUrl } from "@/lib/site-url";
 import { QueryProvider } from "@/providers/QueryProvider";
 
 const geistSans = Geist({
@@ -15,10 +16,10 @@ const geistMono = Geist_Mono({
   subsets: ["latin"],
 });
 
+const siteUrl = getSiteUrl();
+
 export const metadata: Metadata = {
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL ?? "http://localhost:3000",
-  ),
+  metadataBase: new URL(siteUrl),
   title: {
     default: "RentalCar — rent a car online",
     template: "%s | RentalCar",
@@ -30,6 +31,7 @@ export const metadata: Metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
+    url: siteUrl,
     siteName: "RentalCar",
     title: "RentalCar — rent a car online",
     description:

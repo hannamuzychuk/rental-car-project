@@ -1,6 +1,6 @@
 "use client";
 
-import { getBrandsList } from "@/lib/api/brends";
+import { getCatalogFilters } from "@/lib/api/brands";
 import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { LuChevronDown, LuChevronUp } from "react-icons/lu";
@@ -28,8 +28,9 @@ export function CatalogBrandSelect({
   disabled,
 }: CatalogBrandSelectProps) {
   const brandsQuery = useQuery({
-    queryKey: ["car-filters", "brands"],
-    queryFn: () => getBrandsList(),
+    queryKey: ["car-filters"],
+    queryFn: getCatalogFilters,
+    select: (data) => data.brands,
   });
 
   const busy = Boolean(disabled) || brandsQuery.isLoading;

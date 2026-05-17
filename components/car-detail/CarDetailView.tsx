@@ -1,3 +1,4 @@
+import Image from "next/image";
 import { getCarDisplayIdFromImg } from "@/lib/car-image-id";
 import {
   formatCarLocationShort,
@@ -55,7 +56,15 @@ export function CarDetailView({ car }: { car: Car }) {
       </div>
       <div className={styles.grid}>
         <div className={styles.left}>
-          <img className={styles.hero} src={car.img} alt={heading} />
+          <Image
+            className={styles.hero}
+            src={car.img}
+            alt={heading}
+            width={640}
+            height={512}
+            sizes="(max-width: 1439px) 100vw, 640px"
+            priority
+          />
           <RentalForm carId={car.id} embedded />
         </div>
 

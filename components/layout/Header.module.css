@@ -70,6 +70,61 @@
   background: transparent;
 }
 
+.favorites {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-left: 4px;
+  border-radius: 8px;
+  color: #101828;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.favorites:hover {
+  background: #f2f4f7;
+}
+
+.favorites:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #3470ff;
+}
+
+.favoritesActive {
+  color: #3470ff;
+  background: transparent;
+}
+
+.favoritesActive:hover {
+  color: #3470ff;
+  background: transparent;
+}
+
+.heartIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.favoritesBadge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  box-sizing: border-box;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #3470ff;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: center;
+}
+
 @media (min-width: 768px) {
   .inner {
     padding-block: 16px;
@@ -80,5 +135,16 @@
   .linkActive {
     padding: 8px 14px;
     font-size: 16px;
+  }
+
+  .favorites {
+    width: 44px;
+    height: 44px;
+    margin-left: 8px;
+  }
+
+  .heartIcon {
+    width: 22px;
+    height: 22px;
   }
 }
