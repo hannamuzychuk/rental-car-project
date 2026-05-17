@@ -86,13 +86,13 @@ In the Vercel project: **Settings → Environment Variables**, add:
 
 | Name | Value | Environments |
 |------|--------|----------------|
-| `NEXT_PUBLIC_SITE_URL` | `https://outsource-dashboard-hqca.vercel.app` | Production (and Preview if you want the same OG URL on preview builds) |
+| `NEXT_PUBLIC_SITE_URL` | `https://rental-car-project.vercel.app` | Production (and Preview if you want the same OG URL on preview builds) |
 
 Redeploy after saving so metadata picks up the new value. Without it, Vercel still sets `VERCEL_URL` at build time as a fallback, but an explicit `NEXT_PUBLIC_SITE_URL` keeps Open Graph and canonical links stable (especially if you add a custom domain later).
 
 Set `NEXT_PUBLIC_API_URL` only if you use a custom API host.
 
-**Live demo:** [https://outsource-dashboard-hqca.vercel.app/](https://outsource-dashboard-hqca.vercel.app/)
+**Live demo:** [https://rental-car-project.vercel.app/](https://rental-car-project.vercel.app/)
 
 ## Author
 

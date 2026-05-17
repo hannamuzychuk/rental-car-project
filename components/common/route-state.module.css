@@ -54,6 +54,8 @@
 }
 
 .primary {
+  min-width: 156px;
+  padding: 0 40px;
   border: none;
   background: #3470ff;
   color: #fff;
