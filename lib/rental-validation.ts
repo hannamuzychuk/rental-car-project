@@ -1,5 +1,8 @@
 import * as yup from "yup";
 
+export const EMAIL_PATTERN =
+  /^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*\.[a-zA-Z]{2,}$/;
+
 const bookingDateField = yup
   .string()
   .trim()
@@ -29,7 +32,7 @@ const rentalFields = {
     .string()
     .trim()
     .required("Email is required")
-    .email("Enter a valid email address"),
+    .matches(EMAIL_PATTERN, "Enter a valid email address"),
   bookingDate: bookingDateField,
   comment: yup.string().default(""),
 } as const;

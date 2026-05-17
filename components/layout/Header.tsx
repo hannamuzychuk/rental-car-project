@@ -9,6 +9,7 @@ import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useMemo, useSyncExternalStore } from "react";
 import { FaHeart } from "react-icons/fa";
+import { RentalCarLogo } from "./RentalCarLogo";
 import styles from "./Header.module.css";
 
 const links = [
@@ -43,9 +44,8 @@ export function Header() {
   return (
     <header className={styles.bar}>
       <div className={styles.inner}>
-        <Link href="/" className={styles.brand}>
-          <span className={styles.brandRental}>Rental</span>
-          <span className={styles.brandCar}>Car</span>
+        <Link href="/" className={styles.brand} aria-label="RentalCar, home">
+          <RentalCarLogo className={styles.logo} />
         </Link>
         <nav className={styles.nav} aria-label="Main navigation">
           {links.map(({ href, label }) => {

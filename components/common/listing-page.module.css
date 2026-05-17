@@ -1,16 +1,20 @@
 .main {
   box-sizing: border-box;
-  max-width: var(--layout-max-width, 1440px);
-  margin: 0 auto;
+  width: 100%;
+  margin: 0;
   padding: 40px var(--layout-padding-x, 32px) 80px;
 }
 
-.title {
-  margin: 0 0 32px;
-  font-size: 1.75rem;
-  font-weight: 600;
-  line-height: 1.1;
-  color: #101828;
+.visuallyHidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }
 
 .muted {
@@ -23,37 +27,40 @@
   color: #b42318;
 }
 
-.loadMore {
-  display: block;
+.outlineButton {
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  justify-content: center;
   margin: 48px auto 0;
   min-width: 156px;
+  width: fit-content;
   height: 44px;
   padding: 0 24px;
   border-radius: 12px;
   border: 1px solid #3470ff;
   background: #fff;
   color: #101828;
+  font: inherit;
   font-size: 16px;
   font-weight: 600;
+  line-height: 20px;
+  text-align: center;
+  text-decoration: none;
   cursor: pointer;
 }
 
-.loadMore:hover:not(:disabled) {
+.outlineButton:hover:not(:disabled) {
   border-color: #0b44cd;
 }
 
-.loadMore:disabled {
+.outlineButton:disabled {
   opacity: 0.6;
   cursor: not-allowed;
 }
 
 @media (min-width: 375px) {
-  .title {
-    margin-bottom: 36px;
-    font-size: 1.8125rem;
-  }
-
-  .loadMore {
+  .outlineButton {
     margin-top: 52px;
   }
 }
@@ -64,27 +71,19 @@
     padding-bottom: 110px;
   }
 
-  .title {
-    margin-bottom: 40px;
-    font-size: 1.875rem;
-  }
-
-  .loadMore {
+  .outlineButton {
     margin-top: 64px;
   }
 }
 
 @media (min-width: 1440px) {
   .main {
-    padding: 84px 94px 124px 94px;
+    padding-top: 84px;
+    padding-bottom: 124px;
+    padding-inline: 120px;
   }
 
-  .title {
-    margin-bottom: 56px;
-    font-size: 2rem;
-  }
-
-  .loadMore {
+  .outlineButton {
     margin-top: 80px;
   }
 }

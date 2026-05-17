@@ -12,52 +12,6 @@
   }
 }
 
-.backRow {
-  margin-bottom: 24px;
-}
-
-.backLink {
-  box-sizing: border-box;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  width: 100%;
-  max-width: 320px;
-  min-height: 44px;
-  padding: 0 24px;
-  border-radius: 12px;
-  border: 1px solid #3470ff;
-  background: #fff;
-  color: #101828;
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.25;
-  text-decoration: none;
-  cursor: pointer;
-}
-
-.backLink:hover {
-  border-color: #0b44cd;
-}
-
-.backLink:focus-visible {
-  outline: none;
-  box-shadow: 0 0 0 2px #3470ff;
-}
-
-@media (min-width: 375px) {
-  .backLink {
-    max-width: none;
-  }
-}
-
-.backIcon {
-  flex-shrink: 0;
-  width: 18px;
-  height: 18px;
-}
-
 .grid {
   display: grid;
   grid-template-columns: minmax(0, 1fr);
@@ -97,92 +51,63 @@
   display: flex;
   min-width: 0;
   flex-direction: column;
-  gap: 0;
+  gap: 32px;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+  max-width: 488px;
+  flex-shrink: 0;
+}
+
+.titleBlock {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  min-height: 108px;
 }
 
 .titleRow {
   display: flex;
   flex-wrap: wrap;
   align-items: baseline;
-  gap: 8px 16px;
-  margin-bottom: 8px;
-}
-
-.title {
-  margin: 0;
-  font-size: 1.5rem;
-  font-weight: 600;
-  line-height: 1.2;
-  color: #101828;
-}
-
-.id {
-  font-size: 14px;
-  font-weight: 400;
-  line-height: 1.43;
-  color: #8d929a;
-}
-
-.meta {
-  display: flex;
-  flex-wrap: wrap;
-  align-items: center;
   column-gap: 16px;
-  row-gap: 8px;
-  margin-bottom: 16px;
-  font-size: 16px;
-  line-height: 1.25;
-  font-weight: 400;
-  color: #101828;
+  row-gap: 4px;
+  min-height: 32px;
 }
 
-.metaLocation {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  min-width: 0;
+.detailsMeta {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
 }
 
-.metaIcon {
-  flex-shrink: 0;
-  font-size: 16px;
-  width: 16px;
-  height: 16px;
-  color: #101828;
+.carInfo {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+  width: 100%;
+  max-width: 488px;
 }
 
-.price {
-  margin: 0 0 24px;
-  font-size: clamp(1.75rem, 4vw + 1rem, 2rem);
-  font-weight: 700;
-  line-height: 1;
-  color: #3470ff;
+.infoSection {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.description {
-  margin: 0 0 32px;
-  font-size: 16px;
-  line-height: 1.5;
-  color: #101828;
-}
-
-.block {
-  margin-bottom: 32px;
-}
-
-.block:last-of-type {
-  margin-bottom: 0;
-}
-
-.blockTitle {
-  margin: 0 0 20px;
+.infoSectionTitle {
+  margin: 0;
   font-size: 18px;
   font-weight: 600;
-  line-height: 1.33;
+  line-height: 24px;
   color: #101828;
 }
 
-.checkList {
+.infoList {
   list-style: none;
   margin: 0;
   padding: 0;
@@ -191,17 +116,18 @@
   gap: 16px;
 }
 
-.checkList li {
+.infoRow {
   display: flex;
   align-items: flex-start;
   gap: 8px;
+  min-height: 20px;
   font-size: 16px;
-  line-height: 1.25;
+  line-height: 20px;
   font-weight: 400;
   color: #101828;
 }
 
-.checkIcon {
+.infoIcon {
   flex-shrink: 0;
   margin-top: 2px;
   font-size: 16px;
@@ -210,38 +136,71 @@
   color: #101828;
 }
 
-.specList {
-  list-style: none;
+.title {
   margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 16px;
+  font-size: 24px;
+  font-weight: 600;
+  line-height: 32px;
+  color: #101828;
 }
 
-.specRow {
+.id {
+  font-family: var(--second-family), "Inter", sans-serif;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+  color: #8d929a;
+}
+
+.metaRow {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
-  gap: 8px;
+  column-gap: 16px;
+  row-gap: 8px;
+  min-height: 20px;
   font-size: 16px;
-  line-height: 1.25;
+  line-height: 20px;
+  font-weight: 400;
+  color: #101828;
 }
 
-.specIcon {
+.metaLocation {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 4px;
+  min-width: 0;
+}
+
+.metaMileage {
+  display: inline-flex;
+  align-items: flex-start;
+  gap: 4px;
   flex-shrink: 0;
+}
+
+.metaIcon {
+  flex-shrink: 0;
+  margin-top: 2px;
   font-size: 16px;
   width: 16px;
   height: 16px;
   color: #101828;
 }
 
-.specLabel {
-  font-weight: 400;
-  color: #101828;
+.price {
+  margin: 0;
+  font-size: 32px;
+  font-weight: 600;
+  line-height: 32px;
+  color: #3470ff;
 }
 
-.specValue {
+.description {
+  margin: 0;
+  font-size: 16px;
+  line-height: 20px;
+  font-weight: 400;
   color: #101828;
 }
 
@@ -253,17 +212,18 @@
   .grid {
     grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     gap: 32px 40px;
+    align-items: stretch;
   }
 
-  .title {
-    font-size: 1.75rem;
+  .right {
+    min-height: 100%;
   }
 
-  .backLink {
-    width: auto;
-    min-width: 156px;
-    max-width: none;
-    height: 44px;
+  .carInfo {
+    flex: 1 1 auto;
+    min-height: 0;
+    justify-content: space-between;
+    gap: 0;
   }
 }
 
@@ -283,12 +243,13 @@
     gap: 40px;
   }
 
-  .title {
-    line-height: 1;
+  .right {
+    gap: 68px;
+    min-height: 100%;
   }
 
-  .price {
-    font-size: 2rem;
-    line-height: 1;
+  .title {
+    font-size: 32px;
+    line-height: 32px;
   }
 }

@@ -103,16 +103,14 @@ export function CatalogCarCard({
         </div>
       </div>
 
-      <div className={styles.ctaWrap}>
-        <Link
-          href={`/catalog/${car.id}`}
-          className={styles.readMore}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Read more
-        </Link>
-      </div>
+      <Link
+        href={`/catalog/${car.id}`}
+        className={styles.readMore}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Read more
+      </Link>
     </li>
   );
 }

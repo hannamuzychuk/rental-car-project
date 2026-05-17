@@ -10,7 +10,12 @@ type GlobalErrorProps = {
 export default function GlobalError({ error, reset }: GlobalErrorProps) {
   return (
     <html lang="en">
-      <body style={{ margin: 0, fontFamily: "Arial, Helvetica, sans-serif" }}>
+      <body
+        style={{
+          margin: 0,
+          fontFamily: '"Manrope", "Inter", sans-serif',
+        }}
+      >
         <GlobalErrorView
           error={error}
           reset={reset}

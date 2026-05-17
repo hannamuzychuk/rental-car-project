@@ -1,3 +1,4 @@
+import type { ReactNode } from "react";
 import Image from "next/image";
 import { getCarDisplayIdFromImg } from "@/lib/car-image-id";
 import {
@@ -5,15 +6,16 @@ import {
   getCarLocation,
 } from "@/lib/car-location";
 import type { Car } from "@/lib/types/cars";
+import type { IconType } from "react-icons";
 import {
   LuCalendar,
   LuCar,
   LuCircleCheck,
   LuCog,
   LuFuel,
+  LuGauge,
   LuMapPin,
 } from "react-icons/lu";
-import { BackToCatalogLink } from "./BackToCatalogLink";
 import { RentalForm } from "./RentalForm";
 import styles from "./CarDetailView.module.css";
 
@@ -24,16 +26,37 @@ function groupThousandsWithSpaces(value: number) {
     .replace(/\B(?=(\d{3})+(?!\d))/g, " ");
 }
 
-function CheckList({ items }: { items: string[] }) {
+function InfoSection({
+  title,
+  children,
+}: {
+  title: string;
+  children: ReactNode;
+}) {
   return (
-    <ul className={styles.checkList}>
-      {items.map((item, i) => (
-        <li key={`${i}-${item}`}>
-          <LuCircleCheck className={styles.checkIcon} aria-hidden />
-          <span>{item}</span>
-        </li>
-      ))}
-    </ul>
+    <section className={styles.infoSection}>
+      <h2 className={styles.infoSectionTitle}>{title}</h2>
+      {children}
+    </section>
+  );
+}
+
+function InfoList({ children }: { children: ReactNode }) {
+  return <ul className={styles.infoList}>{children}</ul>;
+}
+
+function InfoRow({
+  icon: Icon,
+  children,
+}: {
+  icon: IconType;
+  children: ReactNode;
+}) {
+  return (
+    <li className={styles.infoRow}>
+      <Icon className={styles.infoIcon} aria-hidden />
+      <span>{children}</span>
+    </li>
   );
 }
 
@@ -44,16 +67,17 @@ export function CarDetailView({ car }: { car: Car }) {
 
   const specRows = [
     { icon: LuCalendar, label: "Year", value: String(car.year) },
-    { icon: LuCar, label: "Type", value: car.type },
+    {
+      icon: LuCar,
+      label: "Type",
+      value: car.type.charAt(0).toUpperCase() + car.type.slice(1).toLowerCase(),
+    },
     { icon: LuFuel, label: "Fuel Consumption", value: car.fuelConsumption },
-    { icon: LuCog, label: "Engine", value: car.engine },
+    { icon: LuCog, label: "Engine Size", value: car.engine },
   ] as const;
 
   return (
     <main className={styles.main}>
-      <div className={styles.backRow}>
-        <BackToCatalogLink />
-      </div>
       <div className={styles.grid}>
         <div className={styles.left}>
           <Image
@@ -69,49 +93,64 @@ export function CarDetailView({ car }: { car: Car }) {
         </div>
 
         <div className={styles.right}>
-          <div className={styles.titleRow}>
-            <h1 className={styles.title}>{heading}</h1>
-            <span className={styles.id}>id: {displayId}</span>
+          <div className={styles.details}>
+            <div className={styles.titleBlock}>
+              <div className={styles.titleRow}>
+                <h1 className={styles.title}>{heading}</h1>
+                <span className={styles.id}>Id: {displayId}</span>
+              </div>
+
+              <div className={styles.detailsMeta}>
+                <div className={styles.metaRow}>
+                  <span className={styles.metaLocation}>
+                    <LuMapPin className={styles.metaIcon} aria-hidden />
+                    <span>{formatCarLocationShort(getCarLocation(car))}</span>
+                  </span>
+                  <span className={styles.metaMileage}>
+                    <LuGauge className={styles.metaIcon} aria-hidden />
+                    <span>Mileage: {mileageLabel} km</span>
+                  </span>
+                </div>
+                <p className={styles.price}>${car.rentalPrice}</p>
+              </div>
+            </div>
+
+            <p className={styles.description}>{car.description}</p>
           </div>
 
-          <div className={styles.meta}>
-            <span className={styles.metaLocation}>
-              <LuMapPin className={styles.metaIcon} aria-hidden />
-              <span>{formatCarLocationShort(getCarLocation(car))}</span>
-            </span>
-            <span>Mileage: {mileageLabel} km</span>
+          <div className={styles.carInfo}>
+            <InfoSection title="Rental Conditions:">
+              <InfoList>
+                {car.rentalConditions.map((item, i) => (
+                  <InfoRow key={`${i}-${item}`} icon={LuCircleCheck}>
+                    {item}
+                  </InfoRow>
+                ))}
+              </InfoList>
+            </InfoSection>
+
+            <InfoSection title="Car Specifications:">
+              <InfoList>
+                {specRows.map(({ icon, label, value }) => (
+                  <InfoRow key={label} icon={icon}>
+                    {label}: {value}
+                  </InfoRow>
+                ))}
+              </InfoList>
+            </InfoSection>
+
+            {(car.features?.length ?? 0) > 0 && (
+              <InfoSection title="Accessories and functionalities:">
+                <InfoList>
+                  {(car.features ?? []).map((item, i) => (
+                    <InfoRow key={`${i}-${item}`} icon={LuCircleCheck}>
+                      {item}
+                    </InfoRow>
+                  ))}
+                </InfoList>
+              </InfoSection>
+            )}
           </div>
-
-          <p className={styles.price}>{car.rentalPrice}$</p>
-
-          <p className={styles.description}>{car.description}</p>
-
-          <section className={styles.block}>
-            <h2 className={styles.blockTitle}>Rental Conditions:</h2>
-            <CheckList items={car.rentalConditions} />
-          </section>
-
-          <section className={styles.block}>
-            <h2 className={styles.blockTitle}>Car Specifications:</h2>
-            <ul className={styles.specList}>
-              {specRows.map(({ icon: Icon, label, value }) => (
-                <li key={label} className={styles.specRow}>
-                  <Icon className={styles.specIcon} aria-hidden />
-                  <span className={styles.specLabel}>{label}:</span>
-                  <span className={styles.specValue}>{value}</span>
-                </li>
-              ))}
-            </ul>
-          </section>
-
-          {(car.features?.length ?? 0) > 0 && (
-            <section className={styles.block}>
-              <h2 className={styles.blockTitle}>
-                Accessories and functionalities:
-              </h2>
-              <CheckList items={car.features ?? []} />
-            </section>
-          )}
         </div>
       </div>
     </main>

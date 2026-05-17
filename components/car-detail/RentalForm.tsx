@@ -2,7 +2,10 @@
 
 import { ErrorMessage, Field, Form, Formik } from "formik";
 import { toast } from "sonner";
-import { createBookingRequest } from "@/lib/api/cars";
+import {
+  BookingRequestError,
+  createBookingRequest,
+} from "@/lib/api/cars";
 import {
   buildBookingComment,
   rentalFormValuesSchema,
@@ -40,9 +43,14 @@ export function RentalForm({ carId, embedded = false }: RentalFormProps) {
           initialValues={initialValues}
           validationSchema={rentalFormValuesSchema}
           validateOnBlur
-          validateOnChange={false}
-          onSubmit={async (values, { resetForm, setSubmitting }) => {
-            const submit = async () => {
+          validateOnChange
+          onSubmit={async (
+            values,
+            { resetForm, setSubmitting, setFieldError, setFieldTouched },
+          ) => {
+            const toastId = toast.loading("Sending booking…");
+
+            try {
               const { message } = await createBookingRequest(carId, {
                 name: values.name,
                 email: values.email,
@@ -52,16 +60,16 @@ export function RentalForm({ carId, embedded = false }: RentalFormProps) {
                 ),
               });
               resetForm();
-              return message;
-            };
+              toast.success(message, { id: toastId });
+            } catch (err) {
+              const message =
+                err instanceof Error ? err.message : "Something went wrong";
+              toast.error(message, { id: toastId });
 
-            try {
-              await toast.promise(submit(), {
-                loading: "Sending booking…",
-                success: (message) => message,
-                error: (err) =>
-                  err instanceof Error ? err.message : "Something went wrong",
-              });
+              if (err instanceof BookingRequestError && err.field) {
+                setFieldError(err.field, message);
+                setFieldTouched(err.field, true, false);
+              }
             } finally {
               setSubmitting(false);
             }
@@ -72,9 +80,18 @@ export function RentalForm({ carId, embedded = false }: RentalFormProps) {
             values,
             errors,
             touched,
+            submitCount,
             setFieldValue,
             setFieldTouched,
-          }) => (
+          }) => {
+            const showEmailError = Boolean(
+              errors.email && (touched.email || submitCount > 0),
+            );
+            const showNameError = Boolean(
+              errors.name && (touched.name || submitCount > 0),
+            );
+
+            return (
             <Form className={styles.form} noValidate>
               <div className={styles.fields}>
                 <div className={styles.fieldBlock}>
@@ -85,32 +102,33 @@ export function RentalForm({ carId, embedded = false }: RentalFormProps) {
                     placeholder="Name*"
                     disabled={isSubmitting}
                     className={`${styles.input} ${
-                      touched.name && errors.name ? styles.inputInvalid : ""
+                      showNameError ? styles.inputInvalid : ""
                     }`}
                   />
-                  <ErrorMessage
-                    name="name"
-                    component="p"
-                    className={styles.fieldError}
-                  />
+                  {showNameError ? (
+                    <p className={styles.fieldError}>{errors.name}</p>
+                  ) : null}
                 </div>
 
                 <div className={styles.fieldBlock}>
                   <Field
                     name="email"
                     type="email"
+                    inputMode="email"
                     autoComplete="email"
                     placeholder="Email*"
                     disabled={isSubmitting}
+                    aria-invalid={showEmailError}
+                    aria-describedby={showEmailError ? "email-error" : undefined}
                     className={`${styles.input} ${
-                      touched.email && errors.email ? styles.inputInvalid : ""
+                      showEmailError ? styles.inputInvalid : ""
                     }`}
                   />
-                  <ErrorMessage
-                    name="email"
-                    component="p"
-                    className={styles.fieldError}
-                  />
+                  {showEmailError ? (
+                    <p id="email-error" className={styles.fieldError}>
+                      {errors.email}
+                    </p>
+                  ) : null}
                 </div>
 
                 <div className={styles.fieldBlock}>
@@ -122,7 +140,7 @@ export function RentalForm({ carId, embedded = false }: RentalFormProps) {
                       void setFieldTouched("bookingDate", true);
                     }}
                     disabled={isSubmitting}
-                    placeholder="Booking date*"
+                    placeholder="Booking date"
                     invalid={Boolean(
                       touched.bookingDate && errors.bookingDate,
                     )}
@@ -165,7 +183,8 @@ export function RentalForm({ carId, embedded = false }: RentalFormProps) {
                 </button>
               </div>
             </Form>
-          )}
+            );
+          }}
         </Formik>
       </div>
     </section>

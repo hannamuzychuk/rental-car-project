@@ -103,6 +103,50 @@ export type BookingRequestResponse = {
   message: string;
 };
 
+export type BookingRequestField = "email" | "name";
+
+export class BookingRequestError extends Error {
+  readonly field?: BookingRequestField;
+
+  constructor(message: string, field?: BookingRequestField) {
+    super(message);
+    this.name = "BookingRequestError";
+    this.field = field;
+  }
+}
+
+type BookingApiErrorBody = {
+  message?: string;
+  validation?: {
+    body?: {
+      keys?: string[];
+      message?: string;
+    };
+  };
+};
+
+function parseBookingApiError(
+  data: BookingApiErrorBody,
+  fallback: string,
+): BookingRequestError {
+  const keys = data.validation?.body?.keys ?? [];
+
+  if (keys.includes("email")) {
+    return new BookingRequestError("Enter a valid email address", "email");
+  }
+
+  if (keys.includes("name")) {
+    return new BookingRequestError("Name is required", "name");
+  }
+
+  const apiMessage = data.validation?.body?.message ?? data.message;
+  if (typeof apiMessage === "string" && apiMessage.trim()) {
+    return new BookingRequestError(apiMessage.trim());
+  }
+
+  return new BookingRequestError(fallback);
+}
+
 export async function createBookingRequest(
   carId: string,
   payload: BookingRequestPayload,
@@ -121,24 +165,24 @@ export async function createBookingRequest(
   );
 
   const text = await response.text();
-  let data: BookingRequestResponse | { message?: string } = { message: text };
+  let data: BookingRequestResponse | BookingApiErrorBody = { message: text };
 
   try {
-    data = JSON.parse(text) as BookingRequestResponse;
+    data = JSON.parse(text) as BookingRequestResponse | BookingApiErrorBody;
   } catch {
+    // non-JSON body
   }
 
   if (!response.ok) {
-    const message =
-      typeof data.message === "string" && data.message
-        ? data.message
-        : text || `POST /cars/${carId}/booking-requests failed: ${response.status}`;
-    throw new Error(message);
+    const fallback =
+      text || `POST /cars/${carId}/booking-requests failed: ${response.status}`;
+    throw parseBookingApiError(data, fallback);
   }
 
-  if (typeof data.message !== "string" || !data.message) {
+  const success = data as BookingRequestResponse;
+  if (typeof success.message !== "string" || !success.message) {
     return { message: "Booking submitted successfully." };
   }
 
-  return { message: data.message };
+  return { message: success.message };
 }

@@ -1,23 +1,38 @@
-.section {
-  position: relative;
-  display: flex;
-  width: 100%;
-  flex: 1;
-  min-height: 0;
-  flex-direction: column;
+.backdrop {
+  pointer-events: none;
+  position: fixed;
+  top: var(--header-bar-height, 68px);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
   background-color: #18181b;
   background-image: url("/hero.webp");
   background-repeat: no-repeat;
   background-position: center;
   background-size: cover;
-  color: #fff;
 }
 
 .overlay {
   pointer-events: none;
-  position: absolute;
-  inset: 0;
+  position: fixed;
+  top: var(--header-bar-height, 68px);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 0;
   background: rgba(0, 0, 0, 0.2);
+}
+
+.section {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  width: 100%;
+  flex: 1;
+  min-height: 0;
+  flex-direction: column;
+  color: #fff;
 }
 
 .shell {
@@ -33,7 +48,7 @@
   align-items: center;
   justify-content: flex-end;
   margin-inline: auto;
-  padding: 0 var(--layout-padding-x, 32px) 40px;
+  padding: 0 var(--layout-padding-x, 32px) 60px;
 }
 
 .inner {
@@ -51,14 +66,14 @@
   width: 100%;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
+  gap: 16px;
   text-align: center;
 }
 
 .title {
   margin: 0;
   max-width: 783px;
-  font-size: 60px;
+  font-size: 36px;
   line-height: 1.2;
   font-weight: 700;
   color: #fff;
@@ -66,8 +81,7 @@
 
 .subtitle {
   margin: 0;
-  /* max-width: 585px; */
-  font-size: 24px;
+  font-size: 18px;
   line-height: 1.33;
   font-weight: 600;
   color: #fff;
@@ -120,6 +134,14 @@
   .inner {
     gap: 2rem;
   }
+
+  .title {
+    font-size: 48px;
+  }
+
+  .subtitle {
+    font-size: 20px;
+  }
 }
 
 @media (min-width: 1440px) {
@@ -131,7 +153,17 @@
     gap: 40px;
   }
 
+  .title {
+    font-size: 60px;
+  }
+
+  .subtitle {
+    font-size: 24px;
+  }
+
   .catalogButton {
-    font-size: 20px;
+    font-size: 16px;
+    line-height: 1.25;
+    font-weight: 600;
   }
 }
