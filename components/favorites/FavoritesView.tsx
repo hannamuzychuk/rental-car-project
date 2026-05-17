@@ -12,6 +12,7 @@ import {
   writeFavoriteCarIds,
 } from "@/lib/favorite-cars-storage";
 import { CatalogCarGrid } from "@/components/catalog/CatalogCarGrid";
+import listingStyles from "@/components/common/listing-page.module.css";
 import styles from "./FavoritesView.module.css";
 
 async function fetchFavoriteCars(ids: string[]): Promise<Car[]> {
@@ -58,30 +59,33 @@ export function FavoritesView() {
     query.error instanceof Error ? query.error.message : "Try again.";
 
   return (
-    <main className={styles.main}>
-      <h1 className={styles.title}>Favorites</h1>
+    <main className={listingStyles.main}>
+      <h1 className={listingStyles.visuallyHidden}>Favorites</h1>
 
       {sortedIds.length === 0 && (
         <>
-          <p className={styles.muted}>You have not saved any cars yet.</p>
-          <Link href="/catalog" className={styles.catalogLink}>
+          <p className={listingStyles.muted}>You have not saved any cars yet.</p>
+          <Link
+            href="/catalog"
+            className={`${listingStyles.outlineButton} ${styles.emptyLink}`}
+          >
             Browse catalog
           </Link>
         </>
       )}
 
       {sortedIds.length > 0 && query.isPending && (
-        <p className={styles.muted}>Loading...</p>
+        <p className={listingStyles.muted}>Loading...</p>
       )}
       {sortedIds.length > 0 && query.isError && (
-        <p className={styles.error}>
+        <p className={listingStyles.error}>
           Could not load favorites. {errorMessage}
         </p>
       )}
       {sortedIds.length > 0 &&
         query.isSuccess &&
         query.data.length === 0 && (
-          <p className={styles.muted}>
+          <p className={listingStyles.muted}>
             None of your saved cars could be loaded. They may have been removed
             from the catalog.
           </p>

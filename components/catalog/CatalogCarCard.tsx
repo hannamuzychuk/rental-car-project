@@ -2,9 +2,10 @@
 
 import { getCarLocation } from "@/lib/car-location";
 import type { Car } from "@/lib/types/cars";
+import Image from "next/image";
+import Link from "next/link";
 import { FaHeart } from "react-icons/fa";
 import styles from "./CatalogCarCard.module.css";
-import Link from "next/link";
 
 function formatMileageKm(value: number) {
   if (!Number.isFinite(value)) return "";
@@ -32,13 +33,12 @@ export function CatalogCarCard({
     <li className={styles.card}>
       <div className={styles.stack}>
         <div className={styles.media}>
-          <img
+          <Image
             className={styles.thumb}
             src={car.img}
             alt={label}
-            width={276}
-            height={268}
-            loading="lazy"
+            fill
+            sizes="(max-width: 767px) 100vw, (max-width: 1439px) 50vw, 25vw"
           />
           <div className={styles.scrim} aria-hidden />
           <button
@@ -103,16 +103,14 @@ export function CatalogCarCard({
         </div>
       </div>
 
-      <div className={styles.ctaWrap}>
-        <Link
-          href={`/catalog/${car.id}`}
-          className={styles.readMore}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Read more
-        </Link>
-      </div>
+      <Link
+        href={`/catalog/${car.id}`}
+        className={styles.readMore}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        Read more
+      </Link>
     </li>
   );
 }

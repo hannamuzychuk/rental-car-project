@@ -14,6 +14,7 @@ export function Hero({
 }: HeroProps) {
   return (
     <section className={styles.section}>
+      <div className={styles.backdrop} aria-hidden />
       <div className={styles.overlay} aria-hidden />
       <div className={styles.shell}>
         <div className={styles.inner}>

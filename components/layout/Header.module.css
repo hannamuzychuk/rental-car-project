@@ -1,47 +1,183 @@
 .bar {
+  position: relative;
+  z-index: 10;
   box-sizing: border-box;
   flex-shrink: 0;
-  min-height: var(--header-bar-height, 68px);
-  border-bottom: 1px solid #e4e7ec;
-  background: rgb(242, 244, 247);
+  height: var(--header-bar-height, 68px);
+  border-bottom: 1px solid #f2f4f7;
+  background: #f2f4f7;
 }
 
 .inner {
   box-sizing: border-box;
-  max-width: var(--layout-max-width, 1440px);
+  height: 100%;
   width: 100%;
+  max-width: var(--layout-max-width, 1440px);
   margin-inline: auto;
-  padding: 12px var(--layout-padding-x, 32px);
+  padding-inline: var(--layout-padding-x, 32px);
   display: flex;
   align-items: center;
   justify-content: space-between;
   gap: 12px;
 }
 
+
 .brand {
   display: inline-flex;
-  align-items: baseline;
-  font-size: 18px;
-  font-weight: 600;
+  align-items: center;
   text-decoration: none;
+  line-height: 0;
 }
 
-.brandRental {
-  color: #101828;
+.logo {
+  display: block;
+  width: 104px;
+  height: 16px;
 }
 
-.brandCar {
-  color: #3470ff;
+.brand:focus-visible {
+  outline: none;
+  border-radius: 4px;
+  box-shadow: 0 0 0 2px #3470ff;
 }
 
-.brand:hover .brandRental {
-  color: #3470ff;
-}
-
-.nav {
-  display: flex;
+.navDesktop {
+  display: none;
   align-items: center;
   gap: 8px;
+}
+
+.menuButton {
+  box-sizing: border-box;
+  display: inline-flex;
+  flex-shrink: 0;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin: 0;
+  padding: 0;
+  border: none;
+  border-radius: 8px;
+  background: transparent;
+  color: #101828;
+  cursor: pointer;
+  transition: background 0.15s ease;
+}
+
+.menuButton:hover {
+  background: #e4e7ec;
+}
+
+.menuButton:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #3470ff;
+}
+
+.menuIcon {
+  width: 22px;
+  height: 22px;
+}
+
+.backdrop {
+  position: fixed;
+  top: var(--header-bar-height, 68px);
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 8;
+  margin: 0;
+  padding: 0;
+  border: none;
+  background: rgba(16, 24, 40, 0.4);
+  cursor: pointer;
+}
+
+.navPanel {
+  position: fixed;
+  top: var(--header-bar-height, 68px);
+  right: 0;
+  left: 0;
+  z-index: 9;
+  box-sizing: border-box;
+  max-height: 0;
+  overflow: hidden;
+  border-bottom: 1px solid transparent;
+  background: #f2f4f7;
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition:
+    max-height 0.25s ease,
+    opacity 0.2s ease,
+    visibility 0.2s ease;
+}
+
+.navPanelOpen {
+  max-height: calc(100dvh - var(--header-bar-height, 68px));
+  overflow-y: auto;
+  border-bottom-color: #e4e7ec;
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+
+.navPanelInner {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 12px var(--layout-padding-x, 32px) 20px;
+}
+
+.panelLink {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 14px;
+  border-radius: 8px;
+  font-size: 16px;
+  font-weight: 500;
+  color: #101828;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.panelLink:hover {
+  background: #e4e7ec;
+}
+
+.panelLinkActive {
+  color: #0b44cd;
+}
+
+.panelLinkActive:hover {
+  color: #0b44cd;
+  background: #e4e7ec;
+}
+
+.panelFavorites {
+  margin-top: 4px;
+}
+
+.panelHeartIcon {
+  width: 20px;
+  height: 20px;
+  flex-shrink: 0;
+}
+
+.panelBadge {
+  margin-left: auto;
+  box-sizing: border-box;
+  min-width: 22px;
+  height: 22px;
+  padding: 0 6px;
+  border-radius: 999px;
+  background: #3470ff;
+  color: #fff;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 22px;
+  text-align: center;
 }
 
 .link {
@@ -61,24 +197,99 @@
 }
 
 .linkActive {
-  color: #3470ff;
+  color: #0b44cd;
   background: transparent;
 }
 
 .linkActive:hover {
+  color: #0b44cd;
+  background: transparent;
+}
+
+.favorites {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  margin-left: 4px;
+  border-radius: 8px;
+  color: #101828;
+  text-decoration: none;
+  transition: background 0.15s ease, color 0.15s ease;
+}
+
+.favorites:hover {
+  background: #f2f4f7;
+}
+
+.favorites:focus-visible {
+  outline: none;
+  box-shadow: 0 0 0 2px #3470ff;
+}
+
+.favoritesActive {
   color: #3470ff;
   background: transparent;
 }
 
+.favoritesActive:hover {
+  color: #3470ff;
+  background: transparent;
+}
+
+.heartIcon {
+  width: 20px;
+  height: 20px;
+}
+
+.favoritesBadge {
+  position: absolute;
+  top: 2px;
+  right: 2px;
+  box-sizing: border-box;
+  min-width: 16px;
+  height: 16px;
+  padding: 0 4px;
+  border-radius: 999px;
+  background: #3470ff;
+  color: #fff;
+  font-size: 10px;
+  font-weight: 600;
+  line-height: 16px;
+  text-align: center;
+}
+
 @media (min-width: 768px) {
   .inner {
-    padding-block: 16px;
     gap: 16px;
+  }
+
+  .menuButton,
+  .backdrop,
+  .navPanel {
+    display: none;
+  }
+
+  .navDesktop {
+    display: flex;
   }
 
   .link,
   .linkActive {
     padding: 8px 14px;
     font-size: 16px;
+  }
+
+  .favorites {
+    width: 44px;
+    height: 44px;
+    margin-left: 8px;
+  }
+
+  .heartIcon {
+    width: 22px;
+    height: 22px;
   }
 }

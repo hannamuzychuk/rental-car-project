@@ -20,7 +20,7 @@ import {
   subscribeFavoriteCarIds,
   writeFavoriteCarIds,
 } from "@/lib/favorite-cars-storage";
-import styles from "./CatalogView.module.css";
+import listingStyles from "@/components/common/listing-page.module.css";
 import { CatalogCarGrid } from "./CatalogCarGrid";
 
 const PAGE_SIZE = 12;
@@ -105,15 +105,15 @@ function CatalogPagedGrid({
   return (
     <>
       {showInitialLoading && (
-        <p className={styles.muted}>Loading...</p>
+        <p className={listingStyles.muted}>Loading...</p>
       )}
       {query.isError && (
-        <p className={styles.error}>
+        <p className={listingStyles.error}>
           Could not load cars. {errorMessage}
         </p>
       )}
       {query.isSuccess && cars.length === 0 && (
-        <p className={styles.muted}>No cars found</p>
+        <p className={listingStyles.muted}>No cars found</p>
       )}
 
       <CatalogCarGrid
@@ -124,7 +124,7 @@ function CatalogPagedGrid({
       {query.hasNextPage && (
         <button
           type="button"
-          className={styles.loadMore}
+          className={listingStyles.outlineButton}
           onClick={() => void query.fetchNextPage()}
           disabled={query.isFetchingNextPage}
         >
@@ -188,8 +188,8 @@ export function CatalogView() {
   );
 
   return (
-    <main className={styles.main}>
-      <h1 className={styles.title}>Catalog</h1>
+    <main className={listingStyles.main}>
+      <h1 className={listingStyles.visuallyHidden}>Catalog</h1>
       <CatalogToolbar
         key={filtersSignature(filters)}
         filters={filters}

@@ -11,6 +11,7 @@
   border: none;
   border-radius: 12px;
   background: #f7f7f7;
+  font-family: var(--second-family), "Inter", sans-serif;
   font-size: 16px;
   line-height: 1.25;
   color: #101828;

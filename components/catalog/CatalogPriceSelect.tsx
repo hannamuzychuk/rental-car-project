@@ -1,10 +1,12 @@
 "use client";
 
+import { getCatalogFilters } from "@/lib/api/brands";
+import { buildPriceFilterOptions } from "@/lib/catalog-price";
+import { useQuery } from "@tanstack/react-query";
 import { useCallback, useEffect, useId, useMemo, useRef, useState } from "react";
 import { LuChevronDown, LuChevronUp } from "react-icons/lu";
 import styles from "./CatalogFilter.module.css";
 
-const PRICE_OPTIONS = [30, 40, 50, 60, 70, 80] as const;
 const PLACEHOLDER = "Choose a price";
 
 type CatalogPriceSelectProps = {
@@ -26,17 +28,22 @@ export function CatalogPriceSelect({
   onChange,
   disabled,
 }: CatalogPriceSelectProps) {
-  const rows: Row[] = useMemo(
-    () => [
+  const pricesQuery = useQuery({
+    queryKey: ["car-filters"],
+    queryFn: getCatalogFilters,
+    select: (data) => buildPriceFilterOptions(data.price.min, data.price.max),
+  });
+
+  const busy = Boolean(disabled) || pricesQuery.isLoading;
+  const blocked = busy || pricesQuery.isError;
+
+  const rows: Row[] = useMemo(() => {
+    const list = pricesQuery.data ?? [];
+    return [
       { key: "__clear__", value: "", label: PLACEHOLDER },
-      ...PRICE_OPTIONS.map((n) => ({
-        key: String(n),
-        value: String(n),
-        label: String(n),
-      })),
-    ],
-    [],
-  );
+      ...list.map((p) => ({ key: p, value: p, label: p })),
+    ];
+  }, [pricesQuery.data]);
 
   const [open, setOpen] = useState(false);
   const [highlight, setHighlight] = useState(0);
@@ -78,7 +85,7 @@ export function CatalogPriceSelect({
   );
 
   const onTriggerClick = () => {
-    if (disabled) return;
+    if (blocked) return;
     if (open) {
       setOpen(false);
     } else {
@@ -87,7 +94,7 @@ export function CatalogPriceSelect({
   };
 
   const onTriggerKeyDown = (e: React.KeyboardEvent) => {
-    if (disabled) return;
+    if (blocked) return;
     if (e.key === "Escape") {
       if (open) {
         e.preventDefault();
@@ -120,7 +127,11 @@ export function CatalogPriceSelect({
     }
   };
 
-  const triggerLabel = value ? `${value}$` : PLACEHOLDER;
+  const triggerLabel = pricesQuery.isLoading
+    ? "Loading…"
+    : value
+      ? `${value}$`
+      : PLACEHOLDER;
 
   return (
     <div ref={rootRef} className={styles.filterCombo}>
@@ -133,7 +144,7 @@ export function CatalogPriceSelect({
         aria-haspopup="listbox"
         aria-expanded={open}
         aria-controls={listId}
-        disabled={disabled}
+        disabled={blocked}
         onClick={onTriggerClick}
         onKeyDown={onTriggerKeyDown}
         aria-label="Price per hour"
@@ -152,7 +163,7 @@ export function CatalogPriceSelect({
         )}
       </button>
 
-      {open && rows.length >= 1 && (
+      {open && !pricesQuery.isLoading && rows.length >= 1 && (
         <ul
           ref={listRef}
           id={listId}
@@ -189,6 +200,10 @@ export function CatalogPriceSelect({
             );
           })}
         </ul>
+      )}
+
+      {pricesQuery.isError && (
+        <p className={styles.error}>Could not load prices. Try again.</p>
       )}
     </div>
   );
