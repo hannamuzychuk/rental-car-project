@@ -4,20 +4,23 @@ import {
   useCallback,
   useEffect,
   useMemo,
-  useRef,
   useState,
   useSyncExternalStore,
   type Dispatch,
   type SetStateAction,
 } from "react";
-import { useInfiniteQuery } from "@tanstack/react-query";
+import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
 import { CatalogFilter, type CatalogFilterDraft } from "./CatalogFilter";
 import { getCarsList } from "@/lib/api/cars";
 import type { Car } from "@/lib/types/cars";
 import { normalizeMileageDraft } from "@/lib/catalog-mileage";
-import { buildCatalogSearch, parseCatalogFilters } from "@/lib/catalog-url";
+import {
+  buildCatalogSearch,
+  filtersFromFilterKey,
+  stableFilterKey,
+} from "@/lib/catalog-url";
 import {
   getFavoriteCarIdsSnapshot,
   getServerFavoriteCarIdsSnapshot,
@@ -30,18 +33,23 @@ import { CatalogCarGrid } from "./CatalogCarGrid";
 const PAGE_SIZE = 12;
 
 type CatalogPagedGridProps = {
-  filters: CatalogFilterDraft;
+  filterKey: string;
   favoriteIds: ReadonlySet<string>;
   onToggleFavorite: (carId: string) => void;
 };
 
 function CatalogPagedGrid({
-  filters,
+  filterKey,
   favoriteIds,
   onToggleFavorite,
 }: CatalogPagedGridProps) {
+  const filters = useMemo(
+    () => filtersFromFilterKey(filterKey),
+    [filterKey],
+  );
+
   const query = useInfiniteQuery({
-    queryKey: ["cars", filters] as const,
+    queryKey: ["cars", filterKey] as const,
     initialPageParam: 1,
     queryFn: ({ pageParam }) =>
       getCarsList({
@@ -105,26 +113,34 @@ function CatalogPagedGrid({
   );
 }
 
-export function CatalogView() {
+type CatalogViewProps = {
+  initialFilterKey: string;
+};
+
+export function CatalogView({ initialFilterKey }: CatalogViewProps) {
   const router = useRouter();
+  const queryClient = useQueryClient();
   const searchParams = useSearchParams();
-  const searchKey = searchParams.toString();
+
+  const filterKey = useMemo(() => {
+    const clientKey = stableFilterKey(searchParams);
+    return clientKey || initialFilterKey;
+  }, [searchParams, initialFilterKey]);
 
   const filters = useMemo(
-    () => parseCatalogFilters(new URLSearchParams(searchKey)),
-    [searchKey],
+    () => filtersFromFilterKey(filterKey),
+    [filterKey],
   );
 
   const [draftOverride, setDraftOverride] = useState<CatalogFilterDraft | null>(
     null,
   );
-  const lastSearchKeyRef = useRef(searchKey);
+  const [committedFilterKey, setCommittedFilterKey] = useState(filterKey);
 
-  useEffect(() => {
-    if (searchKey === lastSearchKeyRef.current) return;
-    lastSearchKeyRef.current = searchKey;
+  if (filterKey !== committedFilterKey) {
+    setCommittedFilterKey(filterKey);
     setDraftOverride(null);
-  }, [searchKey]);
+  }
 
   const draft = draftOverride ?? filters;
 
@@ -173,12 +189,23 @@ export function CatalogView() {
     [favoriteIds],
   );
 
-  const applySearch = useCallback(() => {
+  const applySearch = () => {
     const mileage = normalizeMileageDraft(draft.minMileage, draft.maxMileage);
     const next: CatalogFilterDraft = { ...draft, ...mileage };
-    const q = buildCatalogSearch(next);
-    router.replace(`/catalog${q}`, { scroll: false });
-  }, [draft, router]);
+    const href = `/catalog${buildCatalogSearch(next)}`;
+    const nextKey = stableFilterKey(
+      new URLSearchParams(href.split("?")[1] ?? ""),
+    );
+
+    setDraftOverride(null);
+
+    if (nextKey === filterKey) {
+      void queryClient.resetQueries({ queryKey: ["cars", filterKey] });
+      return;
+    }
+
+    router.push(href, { scroll: false });
+  };
 
   return (
     <main className={listingStyles.main}>
@@ -189,7 +216,7 @@ export function CatalogView() {
         onSearch={applySearch}
       />
       <CatalogPagedGrid
-        filters={filters}
+        filterKey={filterKey}
         favoriteIds={favoriteIds}
         onToggleFavorite={onToggleFavorite}
       />

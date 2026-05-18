@@ -1,6 +1,21 @@
 import type { CatalogFilterDraft } from "@/components/catalog/CatalogFilter";
 import { normalizeMileageDraft } from "@/lib/catalog-mileage";
 
+/** Canonical query string (sorted keys) for stable URL comparisons. */
+export function stableFilterKey(sp: URLSearchParams): string {
+  const keys = [...new Set([...sp.keys()])].sort();
+  const out = new URLSearchParams();
+  for (const key of keys) {
+    const value = sp.get(key);
+    if (value != null && value !== "") out.set(key, value);
+  }
+  return out.toString();
+}
+
+export function filtersFromFilterKey(filterKey: string): CatalogFilterDraft {
+  return parseCatalogFilters(new URLSearchParams(filterKey));
+}
+
 export function buildCatalogSearch(filters: CatalogFilterDraft): string {
   const sp = new URLSearchParams();
   const brand = filters.brand.trim();
@@ -13,7 +28,7 @@ export function buildCatalogSearch(filters: CatalogFilterDraft): string {
   );
   if (minMileage) sp.set("minMileage", minMileage);
   if (maxMileage) sp.set("maxMileage", maxMileage);
-  const q = sp.toString();
+  const q = stableFilterKey(sp);
   return q ? `?${q}` : "";
 }
 
