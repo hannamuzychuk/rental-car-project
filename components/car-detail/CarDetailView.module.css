@@ -5,6 +5,31 @@
   padding: 24px var(--layout-padding-x, 32px) 48px;
 }
 
+.backToCatalog {
+  margin: 0 0 24px 0;
+}
+
+@media (min-width: 375px) {
+  .backToCatalog {
+    margin-top: 0;
+    margin-bottom: 28px;
+  }
+}
+
+@media (min-width: 768px) {
+  .backToCatalog {
+    margin-top: 0;
+    margin-bottom: 32px;
+  }
+}
+
+@media (min-width: 1440px) {
+  .backToCatalog {
+    margin-top: 0;
+    margin-bottom: 32px;
+  }
+}
+
 @media (min-width: 375px) {
   .main {
     padding-top: 28px;

@@ -16,6 +16,7 @@ import {
   LuGauge,
   LuMapPin,
 } from "react-icons/lu";
+import { BackToCatalogLink } from "./BackToCatalogLink";
 import { RentalForm } from "./RentalForm";
 import styles from "./CarDetailView.module.css";
 
@@ -78,6 +79,7 @@ export function CarDetailView({ car }: { car: Car }) {
 
   return (
     <main className={styles.main}>
+      <BackToCatalogLink className={styles.backToCatalog} />
       <div className={styles.grid}>
         <div className={styles.left}>
           <Image

@@ -1,32 +1,47 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useSyncExternalStore } from "react";
 import { LuArrowLeft } from "react-icons/lu";
 import { isCatalogListHref } from "@/lib/catalog-url";
-import styles from "./CarDetailView.module.css";
+import listingStyles from "@/components/common/listing-page.module.css";
+import styles from "./BackToCatalogLink.module.css";
 
-export function BackToCatalogLink() {
-  const [href, setHref] = useState("/catalog");
+function subscribe() {
+  return () => {};
+}
 
-  useEffect(() => {
-    try {
-      const saved = sessionStorage.getItem("catalog-last-path");
-      if (saved && isCatalogListHref(saved)) {
-        setHref(saved);
-      }
-    } catch {
-    }
-  }, []);
+function getCatalogBackHref(): string {
+  try {
+    const saved = sessionStorage.getItem("catalog-last-path");
+    if (saved && isCatalogListHref(saved)) return saved;
+  } catch {
+  }
+  return "/catalog";
+}
+
+type BackToCatalogLinkProps = {
+  className?: string;
+};
+
+export function BackToCatalogLink({ className }: BackToCatalogLinkProps) {
+  const href = useSyncExternalStore(
+    subscribe,
+    getCatalogBackHref,
+    () => "/catalog",
+  );
+
+  const linkClassName = [
+    listingStyles.outlineButton,
+    styles.root,
+    className,
+  ]
+    .filter(Boolean)
+    .join(" ");
 
   return (
-    <Link
-      href={href}
-      className={styles.backLink}
-      scroll={false}
-      suppressHydrationWarning
-    >
-      <LuArrowLeft className={styles.backIcon} aria-hidden />
+    <Link href={href} className={linkClassName} scroll={false}>
+      <LuArrowLeft className={styles.icon} aria-hidden />
       Back to catalog
     </Link>
   );

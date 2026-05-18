@@ -130,7 +130,7 @@ export function CatalogPriceSelect({
   const triggerLabel = pricesQuery.isLoading
     ? "Loading…"
     : value
-      ? `${value}$`
+      ? `To $${value}`
       : PLACEHOLDER;
 
   return (
@@ -170,7 +170,7 @@ export function CatalogPriceSelect({
           role="listbox"
           aria-labelledby={labelId}
           aria-activedescendant={`${listId}-opt-${highlight}`}
-          className={styles.filterList}
+          className={`${styles.filterList} ${styles.filterListPrice}`}
         >
           {rows.map((row, index) => {
             const isChosenPrice =
