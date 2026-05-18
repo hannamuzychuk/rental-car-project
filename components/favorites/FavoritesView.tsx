@@ -3,6 +3,7 @@
 import { useCallback, useMemo, useSyncExternalStore } from "react";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
+import { toast } from "sonner";
 import { getCarById } from "@/lib/api/cars";
 import type { Car } from "@/lib/types/cars";
 import {
@@ -48,9 +49,13 @@ export function FavoritesView() {
   const onToggleFavorite = useCallback(
     (carId: string) => {
       const next = new Set(favoriteIds);
-      if (next.has(carId)) next.delete(carId);
+      const wasFavorite = next.has(carId);
+      if (wasFavorite) next.delete(carId);
       else next.add(carId);
       writeFavoriteCarIds(next);
+      toast.success(
+        wasFavorite ? "Removed from favorites" : "Added to favorites",
+      );
     },
     [favoriteIds],
   );
