@@ -9,6 +9,7 @@ import {
 } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
+import { toast } from "sonner";
 import { CatalogFilter, type CatalogFilterDraft } from "./CatalogFilter";
 import { getCarsList } from "@/lib/api/cars";
 import type { Car } from "@/lib/types/cars";
@@ -171,9 +172,13 @@ export function CatalogView() {
   const onToggleFavorite = useCallback(
     (carId: string) => {
       const next = new Set(favoriteIds);
-      if (next.has(carId)) next.delete(carId);
+      const wasFavorite = next.has(carId);
+      if (wasFavorite) next.delete(carId);
       else next.add(carId);
       writeFavoriteCarIds(next);
+      toast.success(
+        wasFavorite ? "Removed from favorites" : "Added to favorites",
+      );
     },
     [favoriteIds],
   );
