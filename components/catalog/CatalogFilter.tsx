@@ -31,7 +31,6 @@ export function CatalogFilter({
           <CatalogBrandSelect
             value={draft.brand}
             onChange={(brand) => onDraftChange({ ...draft, brand })}
-            disabled={isBusy}
           />
         </div>
 
@@ -39,7 +38,6 @@ export function CatalogFilter({
           <CatalogPriceSelect
             value={draft.price}
             onChange={(price) => onDraftChange({ ...draft, price })}
-            disabled={isBusy}
           />
         </div>
 
@@ -47,7 +45,6 @@ export function CatalogFilter({
           <CatalogMileageRange
             minMileage={draft.minMileage}
             maxMileage={draft.maxMileage}
-            disabled={isBusy}
             onChange={({ minMileage, maxMileage }) =>
               onDraftChange({ ...draft, minMileage, maxMileage })
             }

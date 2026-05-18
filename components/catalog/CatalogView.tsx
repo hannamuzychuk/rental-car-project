@@ -37,7 +37,15 @@ type CatalogToolbarProps = {
 };
 
 function CatalogToolbar({ filters, isBusy, onApply }: CatalogToolbarProps) {
+  const signature = filtersSignature(filters);
   const [draft, setDraft] = useState(filters);
+  const [syncedSignature, setSyncedSignature] = useState(signature);
+
+  if (signature !== syncedSignature) {
+    setSyncedSignature(signature);
+    setDraft(filters);
+  }
+
   return (
     <CatalogFilter
       draft={draft}
