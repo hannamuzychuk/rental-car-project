@@ -38,7 +38,9 @@ export function CatalogFilter({
         <div className={styles.colPrice}>
           <CatalogPriceSelect
             value={draft.price}
-            onChange={(price) => onDraftChange({ ...draft, price })}
+            onChange={(price) =>
+              onDraftChange((prev) => ({ ...prev, price }))
+            }
           />
         </div>
 

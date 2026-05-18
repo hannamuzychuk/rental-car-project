@@ -4,8 +4,11 @@ import {
   useCallback,
   useEffect,
   useMemo,
+  useRef,
   useState,
   useSyncExternalStore,
+  type Dispatch,
+  type SetStateAction,
 } from "react";
 import { useInfiniteQuery } from "@tanstack/react-query";
 import { useRouter, useSearchParams } from "next/navigation";
@@ -112,13 +115,28 @@ export function CatalogView() {
     [searchKey],
   );
 
-  const [draft, setDraft] = useState(filters);
-  const [urlKey, setUrlKey] = useState(searchKey);
+  const [draftOverride, setDraftOverride] = useState<CatalogFilterDraft | null>(
+    null,
+  );
+  const lastSearchKeyRef = useRef(searchKey);
 
-  if (searchKey !== urlKey) {
-    setUrlKey(searchKey);
-    setDraft(filters);
-  }
+  useEffect(() => {
+    if (searchKey === lastSearchKeyRef.current) return;
+    lastSearchKeyRef.current = searchKey;
+    setDraftOverride(null);
+  }, [searchKey]);
+
+  const draft = draftOverride ?? filters;
+
+  const setDraft = useCallback<Dispatch<SetStateAction<CatalogFilterDraft>>>(
+    (action) => {
+      setDraftOverride((prev) => {
+        const base = prev ?? filters;
+        return typeof action === "function" ? action(base) : action;
+      });
+    },
+    [filters],
+  );
 
   useEffect(() => {
     if (typeof window === "undefined") return;
