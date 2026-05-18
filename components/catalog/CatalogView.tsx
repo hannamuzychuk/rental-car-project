@@ -26,48 +26,16 @@ import { CatalogCarGrid } from "./CatalogCarGrid";
 
 const PAGE_SIZE = 12;
 
-function filtersSignature(f: CatalogFilterDraft) {
-  return `${f.brand}|${f.price}|${f.minMileage}|${f.maxMileage}`;
-}
-
-type CatalogToolbarProps = {
-  filters: CatalogFilterDraft;
-  isBusy: boolean;
-  onApply: (next: CatalogFilterDraft) => void;
-};
-
-function CatalogToolbar({ filters, isBusy, onApply }: CatalogToolbarProps) {
-  const signature = filtersSignature(filters);
-  const [draft, setDraft] = useState(filters);
-  const [syncedSignature, setSyncedSignature] = useState(signature);
-
-  if (signature !== syncedSignature) {
-    setSyncedSignature(signature);
-    setDraft(filters);
-  }
-
-  return (
-    <CatalogFilter
-      draft={draft}
-      onDraftChange={setDraft}
-      onSearch={() => onApply(draft)}
-      isBusy={isBusy}
-    />
-  );
-}
-
 type CatalogPagedGridProps = {
   filters: CatalogFilterDraft;
   favoriteIds: ReadonlySet<string>;
   onToggleFavorite: (carId: string) => void;
-  onSearchBusyChange: (busy: boolean) => void;
 };
 
 function CatalogPagedGrid({
   filters,
   favoriteIds,
   onToggleFavorite,
-  onSearchBusyChange,
 }: CatalogPagedGridProps) {
   const query = useInfiniteQuery({
     queryKey: ["cars", filters] as const,
@@ -94,16 +62,6 @@ function CatalogPagedGrid({
     if (!pages?.length) return [];
     return pages.flatMap((p) => p.cars);
   }, [query.data?.pages]);
-
-  useEffect(() => {
-    onSearchBusyChange(
-      query.isFetching && !query.isFetchingNextPage,
-    );
-  }, [
-    query.isFetching,
-    query.isFetchingNextPage,
-    onSearchBusyChange,
-  ]);
 
   const errorMessage =
     query.error instanceof Error ? query.error.message : "Try again.";
@@ -154,6 +112,14 @@ export function CatalogView() {
     [searchKey],
   );
 
+  const [draft, setDraft] = useState(filters);
+  const [urlKey, setUrlKey] = useState(searchKey);
+
+  if (searchKey !== urlKey) {
+    setUrlKey(searchKey);
+    setDraft(filters);
+  }
+
   useEffect(() => {
     if (typeof window === "undefined") return;
     try {
@@ -164,8 +130,6 @@ export function CatalogView() {
     } catch {
     }
   }, [filters]);
-
-  const [searchBusy, setSearchBusy] = useState(false);
 
   const favoritesSnapshot = useSyncExternalStore(
     subscribeFavoriteCarIds,
@@ -191,29 +155,25 @@ export function CatalogView() {
     [favoriteIds],
   );
 
-  const applySearch = useCallback(
-    (next: CatalogFilterDraft) => {
-      const mileage = normalizeMileageDraft(next.minMileage, next.maxMileage);
-      const q = buildCatalogSearch({ ...next, ...mileage });
-      router.replace(`/catalog${q}`, { scroll: false });
-    },
-    [router],
-  );
+  const applySearch = useCallback(() => {
+    const mileage = normalizeMileageDraft(draft.minMileage, draft.maxMileage);
+    const next: CatalogFilterDraft = { ...draft, ...mileage };
+    const q = buildCatalogSearch(next);
+    router.replace(`/catalog${q}`, { scroll: false });
+  }, [draft, router]);
 
   return (
     <main className={listingStyles.main}>
       <h1 className={listingStyles.visuallyHidden}>Catalog</h1>
-      <CatalogToolbar
-        key={filtersSignature(filters)}
-        filters={filters}
-        isBusy={searchBusy}
-        onApply={applySearch}
+      <CatalogFilter
+        draft={draft}
+        onDraftChange={setDraft}
+        onSearch={applySearch}
       />
       <CatalogPagedGrid
         filters={filters}
         favoriteIds={favoriteIds}
         onToggleFavorite={onToggleFavorite}
-        onSearchBusyChange={setSearchBusy}
       />
     </main>
   );

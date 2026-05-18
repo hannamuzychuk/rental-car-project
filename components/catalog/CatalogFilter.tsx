@@ -1,3 +1,4 @@
+import type { Dispatch, SetStateAction } from "react";
 import Link from "next/link";
 import { CatalogBrandSelect } from "./CatalogBrandSelect";
 import { CatalogMileageRange } from "./CatalogMileageRange";
@@ -13,16 +14,14 @@ export type CatalogFilterDraft = {
 
 type CatalogFilterProps = {
   draft: CatalogFilterDraft;
-  onDraftChange: (next: CatalogFilterDraft) => void;
+  onDraftChange: Dispatch<SetStateAction<CatalogFilterDraft>>;
   onSearch: () => void;
-  isBusy: boolean;
 };
 
 export function CatalogFilter({
   draft,
   onDraftChange,
   onSearch,
-  isBusy,
 }: CatalogFilterProps) {
   return (
     <section className={styles.filters} aria-label="Filters">
@@ -30,7 +29,9 @@ export function CatalogFilter({
         <div className={styles.colBrand}>
           <CatalogBrandSelect
             value={draft.brand}
-            onChange={(brand) => onDraftChange({ ...draft, brand })}
+            onChange={(brand) =>
+              onDraftChange((prev) => ({ ...prev, brand }))
+            }
           />
         </div>
 
@@ -46,7 +47,7 @@ export function CatalogFilter({
             minMileage={draft.minMileage}
             maxMileage={draft.maxMileage}
             onChange={({ minMileage, maxMileage }) =>
-              onDraftChange({ ...draft, minMileage, maxMileage })
+              onDraftChange((prev) => ({ ...prev, minMileage, maxMileage }))
             }
           />
         </div>
@@ -57,7 +58,6 @@ export function CatalogFilter({
           type="button"
           className={styles.apply}
           onClick={onSearch}
-          disabled={isBusy}
         >
           Search
         </button>
