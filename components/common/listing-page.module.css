@@ -3,6 +3,7 @@
   width: 100%;
   margin: 0;
   padding: 40px var(--layout-padding-x, 32px) 80px;
+  background: var(--background, #ffffff);
 }
 
 .visuallyHidden {

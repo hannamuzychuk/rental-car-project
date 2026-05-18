@@ -44,9 +44,11 @@ export function Header() {
       ? `Favorites, ${favoriteCount} saved`
       : "Favorites";
 
-  useEffect(() => {
+  const [menuPathname, setMenuPathname] = useState(pathname);
+  if (pathname !== menuPathname) {
+    setMenuPathname(pathname);
     setMenuOpen(false);
-  }, [pathname]);
+  }
 
   useEffect(() => {
     if (!menuOpen) return;
